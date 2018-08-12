@@ -1,0 +1,12 @@
+@import '../../colors';
+@import '../../mixins';
+
+.sidenav {
+  height: 100%;
+  padding: 15px 0;
+  background-color: grey;
+  @include flex(flex-start, column);
+  &__items {
+    list-style-type: none;
+  }
+}

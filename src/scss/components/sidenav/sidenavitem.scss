@@ -1,0 +1,44 @@
+@import '../../colors';
+@import '../../mixins';
+
+.sidenav {
+  $self: &;
+  &__item {
+    text-align: center;
+    padding: 0 12px;
+    position: relative;
+    cursor: pointer;
+    @include flex(center, column);
+  }
+  &__icon {
+    color: white;
+    padding: 10px;
+    border-radius: 999px;
+    font-size: 1.45rem;
+    transition: background-color 0.25s ease-in-out;
+    &:hover {
+      background-color: rgba(0,0,0,0.2);
+      & ~ #{ $self }__text {
+        opacity: 1;
+        transform: translate3d(75px, 0, 0);
+      }
+    }
+  }
+  &__text {
+    height: 60%;
+    width: fit-content;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    color: $tone-9;
+    font-weight: bold;
+    border-radius: 2px;
+    background-color: white;
+    z-index: -1;
+    opacity: 1;
+    transform: translateX(-5px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    @include depth(1);
+    @include position(absolute, auto 0);
+    @include flex(flex-start, center);
+  }
+}

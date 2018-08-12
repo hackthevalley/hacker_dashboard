@@ -1,0 +1,47 @@
+// 1 Param => justify + align: p1, direction: row
+// 2 Param =>
+//   justify: p1, align: p2, direction: row
+// OR
+//   justify + align: p1, direction: p2
+// 3 Param => justify: p1, align: p2, direction: p3
+@mixin flex($p1: flex-start, $p2: $p1, $p3: row) {
+  display: flex;
+  @if $p1 != flex-start {
+    justify-content: $p1;
+  }
+  @if $p2 == column or $p2 == row-reverse or $p2 == column-reverse {
+    flex-direction: $p2;
+  } @else if $p2 != flex-start and $p2 != row {
+    align-items: $p2;
+  }
+  @if $p3 != row {
+    flex-direction: $p3;
+  }
+}
+
+@mixin depth($depth) {
+  @if $depth==1 {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+  @else if $depth==2 {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+  @else if $depth==3 {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  }
+  @else if $depth==4 {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+  @else if $depth==5 {
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+  }
+}
+
+@mixin position($pos, $margin: 0, $top: 0, $right: $top, $bottom: $top, $left: $right) {
+  position: $pos;
+  margin: $margin;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
