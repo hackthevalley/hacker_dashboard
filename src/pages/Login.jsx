@@ -1,5 +1,17 @@
 import React from 'react';
 import '../css/pages/login.css';
+import { LoginForm } from '../components';
+
+const LOGIN_ITEMS = [
+  {id: "login__email", label: "Email", type: "email"},
+  {id: "login__password", label: "Password", type: "password"}
+];
+
+const REG_ITEMS = [
+  {id: "reg__email", label: "Email", type: "email"},
+  {id: "reg__password", label: "Password", type: "password"},
+  {id: "reg__comfrim", label: "Confirm Password", type: "password"}
+]
 
 export class Login extends React.Component {
   render() {
@@ -10,20 +22,16 @@ export class Login extends React.Component {
           <span className="login__subheader">Dashboard</span>
         </div>
         <h2 className="login__form-header">Login</h2>
-        <form className="login__form">
-          <div className="login__item">
-            <label className="login__label" htmlfor="#login__email">Login</label>
-            <input id="login__email" className="login__input"/>
-          </div>
-          <div className="login__item">
-            <label className="login__label" htmlfor="#login__password">Password</label>
-            <input id="login__password" className="login__input"/>
-          </div>
-          <button className="login__button" type="submit">Login</button>
-        </form>
+        <LoginForm block="login" button="Login" items={LOGIN_ITEMS}/>
       </section>
       <section className="login__section login__section--register">
         <h2 className="login__form-header">Register</h2>
+        <div className="login__wrapper--register">
+          <h3 className="login__form-subheader">First Time Applying? Let's Get Started!</h3>
+          <p className="login__form-text">We remember your account so never have make another one again.</p>
+          <p className="login__form-text">Re-applying is just a simple update and submission.</p>
+        </div>
+        <LoginForm block="login" button="Next Steps" items={REG_ITEMS}/>
       </section>
     </main>
   }

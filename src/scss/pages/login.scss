@@ -33,11 +33,18 @@
     &--register {
       color: $tone-3;
       background-color: $background;
+      padding-top: 60px;
       animation: login__section--register $long-speed $normal-ease backwards;
       @keyframes login__section--register {
         from { transform: translate3d(-50%, 0, 0); opacity: 0; }
         to { transform: translate3d(0, 0, 0); opacity: 1; }
       }
+    }
+  }
+
+  &__wrapper {
+    &--register {
+      padding-top: 40px;
     }
   }
 
@@ -61,15 +68,15 @@
   }
 
   &__input {
-    padding: 8px;
+    padding: 9px;
     border-radius: 2px;
-    #{ $self }__section--login & { border: 2px solid $tone-3 }
-    #{ $self }__section--register & { border: 2px solid white }
+    background-color: $tone-3;
+    border: none;
   }
 
   &__label {
     font-weight: bold;
-    padding-bottom: 2px;
+    padding-bottom: 4px;
   }
 
   &__button {

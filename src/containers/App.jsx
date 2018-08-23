@@ -11,6 +11,7 @@ export class App extends Component {
       <Route exact path="/profile" component={Dashboard}/>
       <Route exact path="/app" component={Dashboard}/>
       <Route exact path="/faq" component={Dashboard}/>
+      <Route exact path="/contact" component={Dashboard}/>
     </Switch>;
   }
 }

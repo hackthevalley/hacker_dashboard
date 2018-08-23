@@ -39,9 +39,11 @@ class _Sidenav extends Component {
       <ul className="sidenav__items sidenav__items--main">
         <div className={`sidenav__highlight${index === -1? "--hide": ""}`} style={{transform}}/>
         {
-          MAIN_ITEMS.map((item, key) => 
-            <SidenavItem active={index === key} click={this.click.bind(this, key)} key={key} {...item}/>
-          )
+          MAIN_ITEMS.map((item, key) => {
+            const active = index === key;
+            const click = active? null: this.click.bind(this, key);
+            return <SidenavItem active={active} key={key} click={click} { ...item }/>
+          })
         }
       </ul>
       <ul className="sidenav__items sidenav__items--bottom">
