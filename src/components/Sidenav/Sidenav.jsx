@@ -22,7 +22,7 @@ class _Sidenav extends Component {
 
   constructor(props) {
     super(props);
-    const path = window.location.pathname;
+    const path = window.location.pathname.replace(process.env.PUBLIC_URL, "");
     const index = MAIN_ITEMS.map(({path}) => path).indexOf(path);
     this.props.moveHighlight(index);
   }
