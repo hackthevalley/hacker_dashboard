@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import '../css/containers/page.css';
 
 export class Page extends Component {
+
   render() {
     const { title, children } = this.props;
     return <main className="page">

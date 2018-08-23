@@ -1,4 +1,4 @@
-import Logo from './logo.jpg';
+import Profile from './profile.jpg';
 export {
-  Logo
+  Profile
 }

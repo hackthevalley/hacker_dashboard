@@ -1,3 +1,9 @@
+$normal-speed: 350ms;
+$long-speed: 1s;
+$normal-ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+$enter-ease: cubic-bezier(0.0, 0.0, 0.2, 1);
+$exit-ease: cubic-bezier(0.4, 0.0, 1, 1);
+
 // 1 Param => justify + align: p1, direction: row
 // 2 Param =>
 //   justify: p1, align: p2, direction: row

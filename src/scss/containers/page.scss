@@ -1,0 +1,15 @@
+@import '../colors';
+@import '../mixins';
+
+.page {
+  margin: 35px 0;
+  padding: 20px 30px;
+  border-radius: 4px 0 0 4px;
+  background-color: white;
+  width: 100%;
+  animation: page $long-speed $normal-ease backwards;
+  @keyframes page {
+    from { transform: translate3d(50%, 0, 0); opacity: 0; }
+    to { transform: translate3d(0, 0, 0); opacity: 1; }
+  }
+}

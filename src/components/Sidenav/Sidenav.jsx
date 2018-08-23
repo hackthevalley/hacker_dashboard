@@ -1,28 +1,71 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { moveHighlight } from '../../redux/actions';
 import { SidenavItem } from './';
 import '../../css/components/sidenav/sidenav.css';
 
-const ITEMS = [
-  { path: "/home", text: "Home", icon: "dashboard" },
-  { path: "/home", text: "Profile", icon: "person" },
-  { path: "/home", text: "Form", icon: "poll" },
-  { path: "/home", text: "FAQ", icon: "help" },
+const MAIN_ITEMS = [
+  { path: "/home", text: "Home"},
+  { path: "/profile", text: "Profile" },
+  { path: "/app", text: "Application" }
 ];
 
-export class Sidenav extends Component {
+const BOTTOM_ITEMS = [
+  { path: "/faq", text: "FAQ" },
+  { path: "/contact", text: "Contact" },
+  { path: "/", text: "Logout" }
+]
+
+class _Sidenav extends Component {
+
+  constructor(props) {
+    super(props);
+    const path = window.location.pathname;
+    const index = MAIN_ITEMS.map(({path}) => path).indexOf(path);
+    this.props.moveHighlight(index);
+  }
+
   render() {
+    const { index } = this.props;
+    const transform = `translate3d(0,calc(${index*100}% + ${index*10}px),0)`;
+
     return <nav className="sidenav">
-      <ul className="sidenav__items">
+      <div className="sidenav__brand">
+        <span className="sidenav__header">Hack The Valley III</span>
+        <span className="sidenav__subheader">Dashboard</span>
+      </div>
+      <ul className="sidenav__items sidenav__items--main">
+        <div className={`sidenav__highlight${index === -1? "--hide": ""}`} style={{transform}}/>
         {
-          ITEMS.map((item, key) => 
-            <SidenavItem key={ key } { ...item } path={ this.click.bind(this, item.path) }/>
+          MAIN_ITEMS.map((item, key) => 
+            <SidenavItem active={index === key} click={this.click.bind(this, key)} key={key} {...item}/>
           )
+        }
+      </ul>
+      <ul className="sidenav__items sidenav__items--bottom">
+        {
+          BOTTOM_ITEMS.map((item, key) => <SidenavItem click={this.click.bind(this, -1)} key={key} {...item}/>)
         }
       </ul>
     </nav>
   }
 
-  click(path) {
-    console.log(path);
+  click(key) {
+    const { index, moveHighlight } = this.props;
+    if (key !== index) {
+      moveHighlight(key);
+    }
   }
 }
+
+const mapStateToProps = state => ({
+  index: state.sidenav.index
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  moveHighlight
+}, dispatch)
+
+export const Sidenav = connect(mapStateToProps, mapDispatchToProps)(_Sidenav)

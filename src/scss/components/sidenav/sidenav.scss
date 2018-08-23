@@ -2,11 +2,47 @@
 @import '../../mixins';
 
 .sidenav {
-  height: 100%;
-  padding: 15px 0;
-  background-color: grey;
+  width: 330px;
+  color: white;
+  padding-bottom: 50px;
   @include flex(flex-start, column);
+  animation: sidenav $long-speed $normal-ease backwards;
+  @keyframes sidenav {
+    from { transform: translate3d(-100%, 0, 0) }
+    to { transform: translate3d(0, 0, 0) }
+  }
+
+  &__highlight {
+    &, &--hide {
+      @include position(absolute, 10px auto 0 0);
+      width: 4px;
+      height: 27px;
+      transition: transform $normal-speed $normal-ease, opacity $normal-speed $enter-ease;
+      will-change: transform;
+      background-color: $highlight;
+    }
+    &--hide { opacity: 0 }
+  }
+
+  &__brand {
+    @include flex(flex-start, column);
+    padding: 55px 30px 40px;
+    font-weight: bold;
+  }
+  &__header {
+    font-size: 1.2rem;
+  }
   &__items {
+    font-weight: bold;
     list-style-type: none;
+    &--main {
+      color: $tone-3;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    &--bottom {
+      margin: auto 0 4px;
+      font-size: 0.8rem;
+    }
   }
 }
