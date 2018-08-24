@@ -2,10 +2,13 @@
 @import '../../mixins';
 
 .sidenav {
-  width: 330px;
+  width: $sidenav-expanded;
   color: white;
   padding-bottom: 50px;
+  transition: transform 700ms $normal-ease;
   @include flex(flex-start, column);
+  @include position(fixed, auto auto auto 0);
+
   animation: sidenav $long-speed $normal-ease backwards;
   @keyframes sidenav {
     from { transform: translate3d(-100%, 0, 0) }
@@ -43,6 +46,54 @@
     &--bottom {
       margin: auto 0 4px;
       font-size: 0.8rem;
+    }
+  }
+  &__menu {
+    width: 45px;
+    height: 45px;
+    border-radius: 20px;
+    border: none;
+    background: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 700ms $normal-ease;
+    @include flex(center, center, column);
+    @include position(absolute, 20px -12px auto auto);
+  }
+  &__bar {
+    width: 24px;
+    height: 2px;
+    margin: 2px 0;
+    border-radius: 1px;
+    background-color: white;
+  }
+}
+
+@include tablet {
+  .sidenav {
+    animation: sidenav $long-speed $normal-ease backwards;
+    @keyframes sidenav {
+      from { transform: translate3d(-100%, 0, 0) }
+      to { transform: translate3d(-$sidenav-expanded + $sidenav-collapsed, 0, 0) }
+    }
+    transform: translate3d(-$sidenav-expanded + $sidenav-collapsed, 0, 0);
+    &__menu {
+      opacity: 1;
+      cursor: pointer;
+      pointer-events: all;
+      transition: background-color $normal-speed $normal-ease;
+      &:hover {
+        background-color: rgba(255,255,255,0.02);
+      }
+      &:active {
+        background-color:rgba(255,255,255,0.05);;
+      }
+    }
+    &--expanded {
+      transform: translate3d(0, 0, 0);
+      & ~ .page {
+        transform: translate3d($sidenav-expanded - $sidenav-collapsed, 0, 0);
+      }
     }
   }
 }

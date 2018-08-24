@@ -9,8 +9,17 @@
 
 #root {
   @include flex;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background-color: $background;
   height: 100vh;
   width: 100%;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: $tone-4;
+    &-thumb {
+      background-color: $tone-6;
+    }
+  }
 }

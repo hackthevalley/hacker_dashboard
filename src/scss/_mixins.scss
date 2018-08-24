@@ -1,8 +1,19 @@
+// Animations
 $normal-speed: 350ms;
 $long-speed: 1s;
 $normal-ease: cubic-bezier(0.4, 0.0, 0.2, 1);
 $enter-ease: cubic-bezier(0.0, 0.0, 0.2, 1);
 $exit-ease: cubic-bezier(0.4, 0.0, 1, 1);
+
+// Breakpoints
+$phone-width: 425px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+$large-desktop: 1440px;
+
+// Sizing Stuff
+$sidenav-expanded: 260px;
+$sidenav-collapsed: 40px;
 
 // 1 Param => justify + align: p1, direction: row
 // 2 Param =>
@@ -25,6 +36,7 @@ $exit-ease: cubic-bezier(0.4, 0.0, 1, 1);
   }
 }
 
+// Some box shadows if we use it
 @mixin depth($depth) {
   @if $depth==1 {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -43,6 +55,7 @@ $exit-ease: cubic-bezier(0.4, 0.0, 1, 1);
   }
 }
 
+// Position defaulting for if we do absolutes or fixed
 @mixin position($pos, $margin: 0, $top: 0, $right: $top, $bottom: $top, $left: $right) {
   position: $pos;
   margin: $margin;
@@ -50,4 +63,29 @@ $exit-ease: cubic-bezier(0.4, 0.0, 1, 1);
   right: $right;
   bottom: $bottom;
   left: $left;
+}
+
+// Breakpoints
+@mixin phone {
+  @media (max-width: #{$phone-width}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+@mixin large-desktop {
+  @media (max-width: #{$large-desktop}) {
+    @content;
+  }
 }

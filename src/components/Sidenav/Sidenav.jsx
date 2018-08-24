@@ -25,13 +25,18 @@ class _Sidenav extends Component {
     const path = window.location.pathname.replace(process.env.PUBLIC_URL, "");
     const index = MAIN_ITEMS.map(({path}) => path).indexOf(path);
     this.props.moveHighlight(index);
+
+    this.state = {
+      expanded: false
+    }
   }
 
   render() {
     const { index } = this.props;
+    const { expanded } = this.state;
     const transform = `translate3d(0,calc(${index*100}% + ${index*10}px),0)`;
 
-    return <nav className="sidenav">
+    return <nav className={`sidenav sidenav--${expanded? "expanded": "collapsed"}`}>
       <div className="sidenav__brand">
         <span className="sidenav__header">Hack The Valley III</span>
         <span className="sidenav__subheader">Dashboard</span>
@@ -51,6 +56,11 @@ class _Sidenav extends Component {
           BOTTOM_ITEMS.map((item, key) => <SidenavItem click={this.click.bind(this, -1)} key={key} {...item}/>)
         }
       </ul>
+      <button type="button" onClick={() => this.setState({expanded: !expanded})} className="sidenav__menu">
+        <div className="sidenav__bar sidenav__bar--first"/>
+        <div className="sidenav__bar sidenav__bar--second"/>
+        <div className="sidenav__bar sidenav__bar--third"/>
+      </button>
     </nav>
   }
 

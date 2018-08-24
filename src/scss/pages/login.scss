@@ -21,6 +21,7 @@
   }
   &__section {
     width: 50%;
+    box-sizing: border-box;
     padding: 35px 45px;
     &--login {
       background-color: white;
@@ -49,7 +50,7 @@
   }
 
   &__form {
-    padding-top: 10px;
+    padding: 10px 0 15px;
   }
 
   &__form-header {
@@ -87,5 +88,28 @@
     margin-top: 15px;
     font-weight: bold;
     padding: 12px 30px;
+  }
+}
+
+@include tablet {
+  .login {
+    flex-direction: column;
+    &__head {
+      padding-bottom: 30px;
+    }
+    &__section {
+      width: 100%;
+    }
+  }
+}
+
+@include phone {
+  .login {
+    &__section {
+      min-height: 100vh;
+    }
+    &__item {
+      width: 100%;
+    }
   }
 }
