@@ -1,3 +1,5 @@
 {
   "HttpInternal": "Something we don't know how to handle happened. It's probably not your fault.",
+  "HackerNotFound": "Email is not registered.",
+  "InvalidPassword": "Whoops! Password is incorrect."
 }
