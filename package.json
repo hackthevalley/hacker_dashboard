@@ -6,6 +6,7 @@
   "dependencies": {
     "connected-react-router": "^4.4.1",
     "history": "^4.7.2",
+    "htv-sdk": "^1.0.4",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
