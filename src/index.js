@@ -16,7 +16,7 @@ import './css/index.css';
 const history = createBrowserHistory({
   basename: process.env.PUBLIC_URL
 });
-const composeEnhancer = window._REDUX_DEVTOOLS_EXTENSION_COMPOSE_ || compose;
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   connectRouter(history)(
     combineReducers(Reducers)

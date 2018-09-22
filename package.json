@@ -6,13 +6,15 @@
   "dependencies": {
     "connected-react-router": "^4.4.1",
     "history": "^4.7.2",
+    "htv-sdk": "^1.0.4",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "reselect": "^3.0.1"
   },
   "scripts": {
     "build-css": "node-sass-chokidar ./src/scss/ -o ./src/css/ --output-style=compressed",
