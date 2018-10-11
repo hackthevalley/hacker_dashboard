@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { moveHighlight } from '../../redux/actions';
+import { moveHighlight, logoutAction } from '../../redux/actions';
 import { SidenavItem } from './';
 import '../../css/components/sidenav/sidenav.css';
 
@@ -77,7 +77,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  moveHighlight
+  moveHighlight,
+  logoutAction,
 }, dispatch)
 
 export const Sidenav = connect(mapStateToProps, mapDispatchToProps)(_Sidenav)
