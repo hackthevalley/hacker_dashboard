@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../css/pages/login.css';
 import { LoginForm } from '../components';
-import { createHackerTokenAction } from '../redux/actions';
+import { createHackerTokenAction, createHackerAction } from '../redux/actions';
 
 const LOGIN_ITEMS = [
   {
@@ -24,14 +24,36 @@ const LOGIN_ITEMS = [
 ];
 
 const REG_ITEMS = [
-  {id: "reg__email", label: "Email", type: "email"},
-  {id: "reg__password", label: "Password", type: "password"},
-  {id: "reg__comfrim", label: "Confirm Password", type: "password"}
+  {
+    id: "reg__email", label: "Email", type: "email",
+    inputProps: {
+      name: 'email_address',
+      required: true,
+      autoComplete: "email",
+    },
+  },
+  {
+    id: "reg__password", label: "Password", type: "password",
+    inputProps: {
+      name: 'password',
+      required: true,
+      autoComplete: "new-password",
+    },
+  },
+  {
+    id: "reg__confrim", label: "Confirm Password", type: "password",
+    inputProps: {
+      name: 'confirm',
+      required: true,
+      autoComplete: "new-password",
+    },
+  }
 ]
 
 class _Login extends React.Component {
   state = {
     loginErrorCodes: false,
+    registerErrorCodes: false,
   }
 
   handleLogin = async (event) => {
@@ -52,9 +74,35 @@ class _Login extends React.Component {
     }
   }
 
+  handleRegister = async (event) => {
+    const { dispatch } = this.props;
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const email_address = formData.get('email_address');
+    const password = formData.get('password');
+    const confirm = formData.get('confirm');
+    if (password !== confirm) {
+      this.setState({
+        registerErrorCodes: ['PasswordDoesNotMatch'],
+      });
+      return;
+    }
+    this.setState({
+      registerErrorCodes: false,
+    });
+    const action = await dispatch(createHackerAction(email_address, password));
+    if (action.error) {
+      this.setState({
+        registerErrorCodes: action.error.errorCodes,
+      });
+      return;
+    }
+  }
+
   render() {
     const {
       loginErrorCodes,
+      registerErrorCodes,
     } = this.state;
     return (
       <main className="login">
@@ -79,7 +127,13 @@ class _Login extends React.Component {
             <p className="login__form-text">We remember your account so never have make another one again.</p>
             <p className="login__form-text">Re-applying is just a simple update and submission.</p>
           </div>
-          <LoginForm block="login" button="Next Steps" items={REG_ITEMS}/>
+          <LoginForm
+            block="login"
+            button="Next Steps"
+            items={REG_ITEMS}
+            onSubmit={this.handleRegister}
+            errorCodes={registerErrorCodes}
+          />
         </section>
       </main>
     );
