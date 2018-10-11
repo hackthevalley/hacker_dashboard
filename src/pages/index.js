@@ -1,5 +1,6 @@
 export * from './Application';
-export * from './Dashboard';
+export * from './Contact';
+export * from './Faq';
 export * from './Home';
 export * from './Login';
 export * from './Profile';
