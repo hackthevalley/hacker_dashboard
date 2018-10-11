@@ -15,7 +15,7 @@ const MAIN_ITEMS = [
 const BOTTOM_ITEMS = [
   { path: "/faq", text: "FAQ" },
   { path: "/contact", text: "Contact" },
-  { path: "/", text: "Logout" }
+  { path: "/", text: "Logout", noPush: true }
 ]
 
 class _Sidenav extends Component {
@@ -46,14 +46,16 @@ class _Sidenav extends Component {
         {
           MAIN_ITEMS.map((item, key) => {
             const active = index === key;
-            const click = active? null: this.click.bind(this, key);
+            const click = active? null: this.click.bind(this, key, item.path);
             return <SidenavItem active={active} key={key} click={click} { ...item }/>
           })
         }
       </ul>
       <ul className="sidenav__items sidenav__items--bottom">
         {
-          BOTTOM_ITEMS.map((item, key) => <SidenavItem click={this.click.bind(this, -1)} key={key} {...item}/>)
+          BOTTOM_ITEMS.map((item, key) => {
+            return <SidenavItem click={this.click.bind(this, -1, item.path)} key={key} {...item}/>
+          })
         }
       </ul>
       <button type="button" onClick={() => this.setState({expanded: !expanded})} className="sidenav__menu">
@@ -64,10 +66,13 @@ class _Sidenav extends Component {
     </nav>
   }
 
-  click(key) {
-    const { index, moveHighlight } = this.props;
+  click(key, path) {
+    const { index, moveHighlight, logoutAction } = this.props;
     if (key !== index) {
       moveHighlight(key);
+    }
+    if (path === "/") {
+      window.setTimeout(() => logoutAction(), 800);
     }
   }
 }
@@ -78,7 +83,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   moveHighlight,
-  logoutAction,
+  logoutAction
 }, dispatch)
 
 export const Sidenav = connect(mapStateToProps, mapDispatchToProps)(_Sidenav)
