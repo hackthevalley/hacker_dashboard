@@ -5,10 +5,10 @@ import { Page } from './../containers';
 export class Dashboard extends Component {
 
   render() {
-    const { children } = this.props;
+    const { children, title } = this.props;
     return <Fragment>
       <Sidenav/>
-      <Page title="Something">
+      <Page title={title}>
         { children }
       </Page>
     </Fragment>

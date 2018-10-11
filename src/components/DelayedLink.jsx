@@ -21,13 +21,15 @@ class _DelayedLink extends React.Component {
   }
 
   click(e) {
-    const { history, to, onClick, pageTransition, delay = 0 } = this.props;
+    const { history, to, onClick, pageTransition, noPush, delay = 0 } = this.props;
     e.preventDefault();
     if (onClick) {
       if (timer) { window.clearTimeout(timer); timer = null }
       onClick();
       pageTransition();
-      timer = window.setTimeout(() => history.push(to), delay);
+      if (!noPush) {
+        timer = window.setTimeout(() => history.push(to), delay);
+      }
     }
   }
 }
