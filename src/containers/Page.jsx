@@ -23,11 +23,10 @@ class _Page extends Component {
   }
 
   render() {
-    const { title, children } = this.props;
+    const { children } = this.props;
     const { change } = this.state;
 
     return <main className={`page${change? " page--exit": ""}`}>
-      <h1 className="page__header">{ title }</h1>
       { children }
     </main>
   }

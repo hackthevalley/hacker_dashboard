@@ -2,26 +2,18 @@ import React, { Component} from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import localforage from 'localforage';
-import { Dashboard, Login } from './../pages';
-import { IsLoggedIn, IsNotLoggedIn } from '../containers';
+import * as Pages from './../pages';
+import { Dashboard } from '.';
 import '../css/containers/app.css';
 import { setSessionAction } from '../redux/actions';
 
-function requireLoggedIn(SomeComponent) {
-  return () => (
-    <IsLoggedIn>
-      <SomeComponent />
-    </IsLoggedIn>
-  )
-}
-
-function requireNotLoggedIn(SomeComponent) {
-  return () => (
-    <IsNotLoggedIn>
-      <SomeComponent />
-    </IsNotLoggedIn>
-  )
-}
+const ROUTES = [
+  { path: "/home", component: Pages.Home },
+  { path: "/profile", component: Pages.Profile },
+  { path: "/app", component: Pages.Application },
+  { path: "/faq", component: Pages.Faq },
+  { path: "/contact", component: Pages.Contact }
+]
 
 class _App extends Component {
   state = {
@@ -63,12 +55,12 @@ class _App extends Component {
     }
     return (
       <Switch>
-        <Route exact path="/" component={requireNotLoggedIn(Login)}/>
-        <Route exact path="/home" component={requireLoggedIn(Dashboard)}/>
-        <Route exact path="/profile" component={requireLoggedIn(Dashboard)}/>
-        <Route exact path="/app" component={requireLoggedIn(Dashboard)}/>
-        <Route exact path="/faq" component={requireLoggedIn(Dashboard)}/>
-        <Route exact path="/contact" component={requireLoggedIn(Dashboard)}/>
+        <Route exact path="/" component={Pages.Login}/>
+        <Dashboard>
+          <Switch>
+            { ROUTES.map((props, key) => <Route exact key={key} { ...props }/>) }
+          </Switch>
+        </Dashboard>
       </Switch>
     );
   }

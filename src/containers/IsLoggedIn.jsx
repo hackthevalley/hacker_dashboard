@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { selectSession } from '../selectors';
@@ -26,7 +26,9 @@ class _IsLoggedIn extends Component {
   }
 
   render() {
-    return this.props.children;
+    return <Fragment>
+      { this.props.children }
+    </Fragment>
   }
 }
 
