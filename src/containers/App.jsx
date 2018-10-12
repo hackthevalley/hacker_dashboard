@@ -6,6 +6,7 @@ import * as Pages from './../pages';
 import { Dashboard } from '.';
 import '../css/containers/app.css';
 import { setSessionAction } from '../redux/actions';
+import { selectSession } from '../selectors';
 
 const ROUTES = [
   { path: "/home", component: Pages.Home },
@@ -16,10 +17,6 @@ const ROUTES = [
 ]
 
 class _App extends Component {
-  state = {
-    rehydrating: true,
-  }
-
   componentDidMount() {
     this.rehydrateSession();
   }
@@ -28,29 +25,19 @@ class _App extends Component {
     const {
       dispatch,
     } = this.props;
-    try {
-      const [
-        email_address,
-        token_body,
-      ] = await Promise.all([
-        localforage.getItem('email_address'),
-        localforage.getItem('token_body'),
-      ]);
-      if (email_address && token_body) {
-        dispatch(setSessionAction(email_address, token_body));
-      }
-    } catch (err) {
-      throw err;
-    } finally {
-      this.setState({
-        rehydrating: false,
-      })
-    }
+    const [
+      email_address,
+      token_body,
+    ] = await Promise.all([
+      localforage.getItem('email_address'),
+      localforage.getItem('token_body'),
+    ]);
+    dispatch(setSessionAction(email_address, token_body));
   }
 
   render() {
-    const { rehydrating } = this.state;
-    if (rehydrating) {
+    const { session } = this.props;
+    if (!session.rehydrated) {
       return null;
     }
     return (
@@ -66,4 +53,6 @@ class _App extends Component {
   }
 }
 
-export const App = withRouter(connect()(_App))
+export const App = withRouter(connect((state) => ({
+  session: selectSession(state),
+}))(_App))

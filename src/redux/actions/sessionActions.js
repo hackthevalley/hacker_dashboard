@@ -1,6 +1,7 @@
 import localforage from 'localforage';
 import htv from 'htv-sdk';
 import HttpRequestError from '../../errors/HttpRequestError';
+import { FETCH_LOADING, FETCH_SUCCESS, FETCH_FAIL } from '.';
 
 export const SETSESSION = 'SETSESSION';
 export const CREATEHACKERTOKEN_FAIL = 'CREATEHACKERTOKEN_FAIL';
@@ -9,45 +10,42 @@ export const CREATEHACKER_FAIL = 'CREATEHACKER_FAIL';
 export const CREATEHACKER_SUCCESS = 'CREATEHACKER_SUCCESS';
 
 export function setSessionAction(email_address, token_body) {
-  return {
-    type: SETSESSION,
-    email_address,
-    token_body,
-  };
-}
-
-export function logoutAction() {
   return async (dispatch) => {
+    htv.setAuthenticationToken(token_body);
     await Promise.all([
-      localforage.setItem('email_address', undefined),
-      localforage.setItem('token_body', undefined),
+      localforage.setItem('email_address', email_address),
+      localforage.setItem('token_body', token_body),
     ]);
     return dispatch({
       type: SETSESSION,
-      email_address: undefined,
-      token_body: undefined,
-    })
-  };
+      email_address,
+      token_body,
+    });
+  }
 }
+
+export const logoutAction = setSessionAction.bind(null, undefined, undefined)
 
 export function createHackerTokenAction(email_address, password) {
   return async (dispatch) => {
     try {
-      const token_body = await htv.Hacker.createToken(email_address, password);
-      await Promise.all([
-        localforage.setItem('email_address', email_address),
-        localforage.setItem('token_body', token_body),
+      const promise = htv.Hacker.createToken(email_address, password);
+      dispatch({ type: FETCH_LOADING, promise });
+      const token_body = await promise;
+      return Promise.all([
+        dispatch(setSessionAction(email_address, token_body)),
+        dispatch({ type: CREATEHACKERTOKEN_SUCCESS }),
+        dispatch({ type: FETCH_SUCCESS }),
       ]);
-      return dispatch({
-        type: CREATEHACKERTOKEN_SUCCESS,
-        email_address,
-        token_body,
-      });
-    } catch (error) {
-      return dispatch({
-        type: CREATEHACKERTOKEN_FAIL,
-        error: new HttpRequestError(error.graphQLErrors.map(err => err.message)),
-      });
+    } catch (err) {
+      const errorCodes = err.graphQLErrors
+        ? err.graphQLErrors.map(err => err.message)
+        : err.errorCodes;
+      const error = new HttpRequestError(errorCodes);
+      return Promise.all([
+        dispatch({ type: CREATEHACKERTOKEN_FAIL, error }),
+        dispatch({ type: FETCH_FAIL, error }),
+      ]);
     }
   }
 }
@@ -55,20 +53,23 @@ export function createHackerTokenAction(email_address, password) {
 export function createHackerAction(email_address, password) {
   return async (dispatch) => {
     try {
-      const token_body = await htv.Hacker.create(email_address, password);
+      const promise = htv.Hacker.create(email_address, password);
+      dispatch({ type: FETCH_LOADING, promise });
+      const hacker_id = await promise;
       return Promise.all([
-        dispatch({
-          type: CREATEHACKER_SUCCESS,
-          email_address,
-          token_body,
-        }),
         dispatch(createHackerTokenAction(email_address, password)),
+        dispatch({ type: CREATEHACKER_SUCCESS, hacker_id }),
+        dispatch({ type: FETCH_SUCCESS }),
       ]);
-    } catch (error) {
-      return dispatch({
-        type: CREATEHACKER_FAIL,
-        error: new HttpRequestError(error.graphQLErrors.map(err => err.message)),
-      });
+    } catch (err) {
+      const errorCodes = err.graphQLErrors
+        ? err.graphQLErrors.map(err => err.message)
+        : err.errorCodes;
+      const error = new HttpRequestError(errorCodes);
+      return Promise.all([
+        dispatch({ type: CREATEHACKER_FAIL, error }),
+        dispatch({ type: FETCH_FAIL, error }),
+      ]);
     }
   }
 }
