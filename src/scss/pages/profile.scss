@@ -1,0 +1,41 @@
+@import '../colors';
+@import '../mixins';
+
+.profile {
+  display: flex;
+  flex-direction: column;
+
+  &__input {
+    padding: 9px;
+    border-radius: 2px;
+    background-color: $tone-3;
+    border: none;
+    max-width: 320px;
+    box-sizing: border-box;
+
+    &_large {
+      max-width: 600px;
+    }
+  }
+
+  &__label {
+    font-weight: bold;
+    padding-bottom: 4px;
+  }
+
+  &__button {
+    background-color: $highlight;
+    color: $tone-10;
+    border-radius: 4px;
+    border: none;
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 12px 30px;
+    max-width: 120px;
+  }
+}
+
+textarea.profile__input {
+  resize: vertical;
+  min-height: 64px;
+}
