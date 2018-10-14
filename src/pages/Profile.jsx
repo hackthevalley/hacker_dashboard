@@ -5,18 +5,18 @@ import {getMeAction, updateHackerAction} from '../redux/actions';
 import {selectHackersMe} from '../selectors';
 import {ErrorCodes} from '../components';
 import SchoolNameServiceProvider from "../providers/SchoolNameServiceProvider";
+import {Hacker} from "../models";
 
 class _Profile extends Component {
 
     constructor(props) {
         super(props);
         this.schoolList = SchoolNameServiceProvider.getList();
+        this.state = {
+            // The actual hacker's profile
+            me: new Hacker({})
+        };
     }
-
-    state = {
-        updateMe: null,
-        updateMeErrorCodes: false,
-    };
 
     componentDidMount() {
         const {dispatch} = this.props;
@@ -26,7 +26,7 @@ class _Profile extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.me !== nextProps.me) {
             this.setState({
-                updateMe: nextProps.me,
+                me: nextProps.me
             })
         }
     }
@@ -59,24 +59,22 @@ class _Profile extends Component {
             });
             return;
         }
-    }
+    };
+
+    handleTextChange = (e) => {
+      
+    };
 
     render() {
-        const {updateMe, updateMeErrorCodes} = this.state;
-        if (!updateMe) {
-            return null;
-        }
         return (
             <form
                 className="profile"
-                onSubmit={this.handleUpdateMe}
-            >
+                onSubmit={this.handleUpdateMe}>
                 <h1>Profile</h1>
 
                 <label
                     className="profile__label"
-                    htmlFor="email_address"
-                >
+                    htmlFor="email_address">
                     Email address
                 </label>
 
@@ -85,11 +83,10 @@ class _Profile extends Component {
                     type="email"
                     className="profile__input"
                     name="email_address"
-                    value={updateMe.email_address || ''}
+                    value={this.state.me.email_address}
                     autoComplete="email"
                     placeholder="john.doe@example.com"
-                    disabled
-                />
+                    disabled/>
 
                 <br/>
 
@@ -105,7 +102,7 @@ class _Profile extends Component {
                     type="text"
                     className="profile__input"
                     name="first_name"
-                    value={updateMe.first_name || ''}
+                    value={this.state.me.first_name || ''}
                     autoComplete="given-name"
                     placeholder="john"
                 />
@@ -124,7 +121,7 @@ class _Profile extends Component {
                     type="text"
                     className="profile__input"
                     name="last_name"
-                    value={updateMe.last_name || ''}
+                    value={this.state.me.last_name || ''}
                     autoComplete="family-name"
                     placeholder="doe"
                 />
@@ -142,7 +139,7 @@ class _Profile extends Component {
                     id="gender"
                     name="gender"
                     className="profile__input"
-                    value={updateMe.gender || ''}
+                    value={this.state.me.gender || ''}
                     autoComplete="sex"
                 >
                     <option value="">
@@ -173,7 +170,7 @@ class _Profile extends Component {
                     type="date"
                     className="profile__input"
                     name="dob"
-                    value={updateMe.dob || ''}
+                    value={this.state.me.dob || ''}
                     autoComplete="bday"
                 />
 
@@ -191,7 +188,7 @@ class _Profile extends Component {
                     type="text"
                     className="profile__input"
                     name="school"
-                    value={updateMe.school || ''}
+                    value={this.state.me.school || ''}
                     autoComplete="off"
                     list="data-schools"
                 />
@@ -210,7 +207,7 @@ class _Profile extends Component {
                     type="text"
                     className="profile__input"
                     name="github"
-                    value={updateMe.github || ''}
+                    value={this.state.me.github || ''}
                     autoComplete="url"
                 />
 
@@ -228,7 +225,7 @@ class _Profile extends Component {
                     type="text"
                     className="profile__input"
                     name="linkedin"
-                    value={updateMe.linkedin || ''}
+                    value={this.state.me.linkedin || ''}
                     autoComplete="url"
                 />
 
@@ -246,7 +243,7 @@ class _Profile extends Component {
                     type="text"
                     className="profile__input"
                     name="website"
-                    value={updateMe.website || ''}
+                    value={this.state.me.website || ''}
                     autoComplete="url"
                 />
 
@@ -280,7 +277,7 @@ class _Profile extends Component {
                     className="profile__input profile__input_large"
                     autoComplete="off"
                 >
-          {updateMe.description || ''}
+          {this.state.me.description || ''}
         </textarea>
 
                 <br/>
@@ -291,9 +288,9 @@ class _Profile extends Component {
                     className="profile__button"
                 />
 
-                <ErrorCodes errorCodes={updateMeErrorCodes}/>
+                {/*<ErrorCodes errorCodes={updateMeErrorCodes}/>*/}
                 <datalist id="data-schools">
-                    {this.schoolList.map(name => <option>{name}</option>)}
+                    {this.schoolList.map(name => <option key={name}>{name}</option>)}
                 </datalist>
             </form>
         )
