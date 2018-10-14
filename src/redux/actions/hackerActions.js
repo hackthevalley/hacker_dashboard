@@ -40,7 +40,7 @@ export function getMeAction() {
       return Promise.all([
         dispatch({
           type: GETME_SUCCESS,
-          hacker: new Hacker(hacker.me),
+          hacker: new Hacker({...hacker.me}),
         }),
         dispatch({ type: FETCH_SUCCESS }),
       ]);
