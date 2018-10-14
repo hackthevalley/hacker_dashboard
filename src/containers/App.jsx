@@ -14,7 +14,7 @@ const ROUTES = [
   { path: "/app", component: Pages.Application },
   { path: "/faq", component: Pages.Faq },
   { path: "/contact", component: Pages.Contact }
-]
+];
 
 class _App extends Component {
   componentDidMount() {

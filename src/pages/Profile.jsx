@@ -9,7 +9,7 @@ class _Profile extends Component {
   state = {
     updateMe: null,
     updateMeErrorCodes: false,
-  }
+  };
 
   componentDidMount() {
     const { dispatch } = this.props;
