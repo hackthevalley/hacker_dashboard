@@ -1,8 +1,9 @@
 import React from 'react';
 import { ErrorCodes } from '../ErrorCodes';
 import { LoginFormItem } from './';
+import {connect} from "react-redux";
 
-export class LoginForm extends React.Component {
+class _LoginForm extends React.Component {
   render() {
     const {
       block,
@@ -20,8 +21,13 @@ export class LoginForm extends React.Component {
           <LoginFormItem key={ key } block={block} { ...props }/>
         )
       }
-      <button className={`${block}__button`} type="submit">{ button }</button>
+      <button className={`${block}__button`} type="submit" disabled={this.props.fetching}>{ button }</button>
+      <br/><br/>
       <ErrorCodes errorCodes={errorCodes} />
     </form>
   }
 }
+
+export const LoginForm = connect((state) => ({
+    fetching: state.fetch.fetching
+}))(_LoginForm);

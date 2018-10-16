@@ -67,9 +67,9 @@ class _Login extends React.Component {
       loginErrorCodes: false,
     });
     const action = await dispatch(createHackerTokenAction(email_address, password));
-    if (action.error) {
+    if (action[0].error) {
       this.setState({
-        loginErrorCodes: action.error.errorCodes,
+        loginErrorCodes: action[0].error.errorCodes,
       });
       return;
     }
@@ -92,9 +92,9 @@ class _Login extends React.Component {
       registerErrorCodes: false,
     });
     const action = await dispatch(createHackerAction(email_address, password));
-    if (action.error) {
+    if (action[0].error) {
       this.setState({
-        registerErrorCodes: action.error.errorCodes,
+        registerErrorCodes: action[0].error.errorCodes,
       });
       return;
     }
@@ -109,9 +109,10 @@ class _Login extends React.Component {
       <IsNotLoggedIn>
         <main className="login">
           <section className="login__section login__section--login">
+              <img src={require('../assets/logo.png')} width={70} />
             <div className="login__head">
-              <h1 className="login__header">Hack The Valley III</h1>
-              <span className="login__subheader">Dashboard</span>
+              <h1 className="login__header">Hack The Valley</h1>
+              <span className="login__subheader">Hacker Dashboard</span>
             </div>
             <h2 className="login__form-header">Login</h2>
             <LoginForm
@@ -126,8 +127,7 @@ class _Login extends React.Component {
             <h2 className="login__form-header">Register</h2>
             <div className="login__wrapper--register">
               <h3 className="login__form-subheader">First Time Applying? Let's Get Started!</h3>
-              <p className="login__form-text">We remember your account so never have make another one again.</p>
-              <p className="login__form-text">Re-applying is just a simple update and submission.</p>
+              <p className="login__form-text">An account helps you keep track of your applications.</p>
             </div>
             <LoginForm
               block="login"

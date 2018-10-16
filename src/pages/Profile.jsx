@@ -4,6 +4,7 @@ import '../scss/pages/profile.scss';
 import {getMeAction, updateHackerAction} from '../redux/actions';
 import {selectHackersMe} from '../selectors';
 import { Profile as avatar } from '../assets';
+import {Announcement} from '../components/Announcements';
 import SchoolNameServiceProvider from "../providers/SchoolNameServiceProvider";
 import {Hacker} from "../models";
 import {ErrorCodes} from "../components/ErrorCodes";
@@ -70,13 +71,19 @@ class _Profile extends Component {
     return (
       <form className="profile" onSubmit={this.handleUpdateMe}>
         <h1 className="profile__header">Profile</h1>
+          <Announcement>
+              HTV 3 applications will be released soon, we will send you an email once it is available.<br/>
+            <small>At the mean time, you can fill out some basic information below.</small>
+          </Announcement>
         <h2>Personal Information</h2>
+          <small>Fill out your information so we can know a bit about you!</small>
+          <br/>
         <div className="profile__content">
           <div className="profile__col">
             <div className="profile__form-item profile__form-item--avatar">
               <label className="profile__label" htmlFor="avatar">Profile Image</label>
               <div className="profile__avatar-wrapper">
-                <img id="avatar" className="profile__avatar" alt="Your uploaded profile" src={avatar} />
+                <img id="avatar" className="profile__avatar" alt="Your uploaded profile" src={this.state.me.avatar} />
               </div>
             </div>
           </div>
@@ -126,7 +133,10 @@ class _Profile extends Component {
             </div>
 
             <div className="profile__form-item">
-              <label className="profile__label" htmlFor="dob">Date of birth</label>
+              <label className="profile__label" htmlFor="dob">
+                  Date of birth<br/>
+                  <small>This is used to determine your eligibility for our events.</small>
+              </label>
               <input
                 id="dob"
                 type="date"
@@ -213,7 +223,11 @@ class _Profile extends Component {
         <h2>Optional Information</h2>
         <div className="profile__content">
           <div className="profile__form-item profile__col profile__col--full">
-            <label className="profile__label" htmlFor="description">Description</label>
+            <label className="profile__label" htmlFor="description">
+                Bio<br/>
+                <small>Tell us more about you! For example what sport do you play.</small>
+            </label>
+
             <textarea
               id="description"
               name="description"
@@ -226,8 +240,7 @@ class _Profile extends Component {
           </div>
         </div>
           <div className="profile__form-item">
-            <input type="submit" value="Save" className="profile__button"
-            />
+            <input type="submit" value="Save" className="profile__button" disabled={this.props.fetching}/>
           </div>
 
         <ErrorCodes errorCodes={this.state.updateMeErrorCodes}/>
@@ -241,4 +254,5 @@ class _Profile extends Component {
 
 export const Profile = connect((state) => ({
   me: selectHackersMe(state),
+    fetching: state.fetch.fetching
 }))(_Profile);

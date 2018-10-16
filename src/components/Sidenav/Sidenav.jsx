@@ -7,14 +7,13 @@ import { SidenavItem } from './';
 import '../../scss/components/sidenav/sidenav.scss';
 
 const MAIN_ITEMS = [
-  { path: "/home", text: "Home"},
   { path: "/profile", text: "Profile" },
-  { path: "/app", text: "Application" }
+  { path: "/app", text: "Applications" }
 ];
 
 const BOTTOM_ITEMS = [
-  { path: "/faq", text: "FAQ" },
-  { path: "/contact", text: "Contact" },
+  // { path: "/faq", text: "FAQ" },
+  // { path: "/contact", text: "Contact" },
   { path: "/", text: "Logout", noPush: true }
 ]
 
@@ -89,8 +88,9 @@ class _Sidenav extends Component {
 
     return <nav className={`sidenav sidenav--${expanded? "expanded": "collapsed"}`}>
       <div className="sidenav__brand">
-        <span className="sidenav__header">Hack The Valley III</span>
-        <span className="sidenav__subheader">Dashboard</span>
+        <img src={require('../../assets/logo_white.png')} width={70} /><br/>
+        <span className="sidenav__header">Hack The Valley</span>
+        <span className="sidenav__subheader">Hacker Dashboard</span>
       </div>
       <ul className="sidenav__items sidenav__items--main">
         <div className={`sidenav__highlight${index === -1? "--hide": ""}`} style={{transform}}/>

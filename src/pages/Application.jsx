@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getEventsAction, getApplicationsAction} from "../redux/actions";
 import '../scss/pages/application.scss';
+import {Announcement} from "../components/Announcements";
 
 class _Application extends Component {
 
@@ -16,6 +17,8 @@ class _Application extends Component {
     return (
       <section className="app">
         <h1>Applications</h1>
+        <br/>
+          <Announcement>HTV 3 applications will be released soon, we will send you an email once it is available.</Announcement>
         <div className="app__content">
           <div className="app__col">
             <h2>My Applications</h2>
@@ -34,29 +37,29 @@ class _Application extends Component {
             }
             </ul>
           </div>
-          <div className="app__col">
-            <h2>Open Applications</h2>
-            <div className="app__event">
-              {
-                events.map(({_id, name, applications}) =>
-                  <div key={ _id } className="app__event">
-                    <h3>{ name }</h3>
-                    <ul className="app__items">
-                      {
-                        applications.map(app =>
-                          <li key={app._id} className="app__item">
-                            <h4>{ app.name }</h4>
-                            <p className="app__description">{app.description ? app.description: "404: Description Not Found" }</p>
-                            <button type="button" className="app__apply-btn">Apply Now</button>
-                          </li>
-                        )
-                      }
-                    </ul>
-                  </div>
-                )
-              }
-            </div>
-          </div>
+          {/*<div className="app__col">*/}
+            {/*<h2>Open Applications</h2>*/}
+            {/*<div className="app__event">*/}
+              {/*{*/}
+                {/*events.map(({_id, name, applications}) =>*/}
+                  {/*<div key={ _id } className="app__event">*/}
+                    {/*<h3>{ name }</h3>*/}
+                    {/*<ul className="app__items">*/}
+                      {/*{*/}
+                        {/*applications.map(app =>*/}
+                          {/*<li key={app._id} className="app__item">*/}
+                            {/*<h4>{ app.name }</h4>*/}
+                            {/*<p className="app__description">{app.description ? app.description: "404: Description Not Found" }</p>*/}
+                            {/*<button type="button" className="app__apply-btn">Apply Now</button>*/}
+                          {/*</li>*/}
+                        {/*)*/}
+                      {/*}*/}
+                    {/*</ul>*/}
+                  {/*</div>*/}
+                {/*)*/}
+              {/*}*/}
+            {/*</div>*/}
+          {/*</div>*/}
         </div>
       </section>
     )

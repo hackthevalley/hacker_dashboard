@@ -20,8 +20,8 @@ class _IsNotLoggedIn extends Component {
       history,
       location,
     } = this.props;
-    if (session && session.token_body && location.pathname !== '/home') {
-      history.replace('/home');
+    if (session && session.token_body && location.pathname !== '/profile') {
+      history.replace('/profile');
     }
   }
 
