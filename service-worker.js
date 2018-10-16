@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/hack_the_valley_dashboard/precache-manifest.631d9f045ff2588008c2fcd8f1f690e2.js"
+  "/hack_the_valley_dashboard/precache-manifest.3161e7b9f64c966183b5d39728cd800c.js"
 );
 
 workbox.clientsClaim();
