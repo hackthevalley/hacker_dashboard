@@ -1,6 +1,14 @@
 {
-  "main.css": "static/css/main.4fdc53bd.css",
-  "main.css.map": "static/css/main.4fdc53bd.css.map",
-  "main.js": "static/js/main.4748b56b.js",
-  "main.js.map": "static/js/main.4748b56b.js.map"
+  "main.css": "/hack_the_valley_dashboard/static/css/main.8d8508fa.chunk.css",
+  "main.js": "/hack_the_valley_dashboard/static/js/main.46df75b8.chunk.js",
+  "main.js.map": "/hack_the_valley_dashboard/static/js/main.46df75b8.chunk.js.map",
+  "static/js/1.60f8edab.chunk.js": "/hack_the_valley_dashboard/static/js/1.60f8edab.chunk.js",
+  "static/js/1.60f8edab.chunk.js.map": "/hack_the_valley_dashboard/static/js/1.60f8edab.chunk.js.map",
+  "runtime~main.js": "/hack_the_valley_dashboard/static/js/runtime~main.f21b6445.js",
+  "runtime~main.js.map": "/hack_the_valley_dashboard/static/js/runtime~main.f21b6445.js.map",
+  "static/media/profile.jpg": "/hack_the_valley_dashboard/static/media/profile.41936774.jpg",
+  "static/css/main.8d8508fa.chunk.css.map": "/hack_the_valley_dashboard/static/css/main.8d8508fa.chunk.css.map",
+  "index.html": "/hack_the_valley_dashboard/index.html",
+  "precache-manifest.631d9f045ff2588008c2fcd8f1f690e2.js": "/hack_the_valley_dashboard/precache-manifest.631d9f045ff2588008c2fcd8f1f690e2.js",
+  "service-worker.js": "/hack_the_valley_dashboard/service-worker.js"
 }
