@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { moveHighlight, logoutAction } from '../../redux/actions';
 import { SidenavItem } from './';
-import '../../css/components/sidenav/sidenav.css';
+import '../../scss/components/sidenav/sidenav.scss';
 
 const MAIN_ITEMS = [
   { path: "/home", text: "Home"},
@@ -29,6 +29,57 @@ class _Sidenav extends Component {
     this.state = {
       expanded: false
     }
+  }
+
+  handleTouch = el => {
+    const { type, timeStamp, changedTouches } = el;
+    if (changedTouches.length === 1) {
+    if (type === "touchstart") {
+      this.touchStart = {
+        timeStamp,
+        X: changedTouches[0].screenX,
+        Y: changedTouches[0].screenY
+      }
+    } else if (type === "touchend") {
+      const { expanded } = this.state;
+      const touchEnd = {
+        timeStamp,
+        X: changedTouches[0].screenX,
+        Y: changedTouches[0].screenY
+      }
+      const X = touchEnd.X - this.touchStart.X;
+      const Y = touchEnd.Y - this.touchStart.Y;
+      const AX = Math.abs(X);
+      const AY = Math.abs(Y);
+      const T = touchEnd.timeStamp - this.touchStart.timeStamp;
+      const V = Math.sqrt(Math.pow(AX,2) + Math.pow(AY,2)) / T;
+
+      console.log(V, X, Y);
+
+      if (V > 1) {
+        if (AX > 100 && AY < 40) {
+          if (X < 0 && expanded) {
+            this.setState({ expanded: false });
+          } else if (X > 0 && !expanded) {
+            this.setState({ expanded: true });
+          }
+        }
+      }
+
+    }
+    } else {
+      console.log("Multi-touch not supported :(");
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("touchstart", this.handleTouch, { passive: true });
+    window.addEventListener("touchend", this.handleTouch, { passive: true });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("touchstart", this.handleTouch);
+    window.removeEventListener("touchend", this.handleTouch);
   }
 
   render() {
@@ -71,8 +122,11 @@ class _Sidenav extends Component {
     if (key !== index) {
       moveHighlight(key);
     }
+    if (this.state.expanded) {
+      this.setState({ expanded: false });
+    }
     if (path === "/") {
-      window.setTimeout(() => logoutAction(), 800);
+      window.setTimeout(() => logoutAction(), 600);
     }
   }
 }

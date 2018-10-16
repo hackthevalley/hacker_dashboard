@@ -4,23 +4,81 @@
 .profile {
   display: flex;
   flex-direction: column;
+  max-width: 900px;
+
+  &__header { margin-bottom: 20px }
+  &__content { display: flex; justify-content: space-between; padding: 10px 0 10px; flex-wrap: wrap }
+  &__col {
+    width: calc(50% - 10px);
+    box-sizing: border-box;
+    padding: 10px 10px 20px;
+    &--full {
+      width: 100%;
+    }
+  }
+
+  &__form-item {
+    padding-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__avatar {
+    height: auto;
+    width: 100%;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  &__avatar-wrapper {
+    width: 100%;
+    max-width: 200px;
+    margin: 5px 0 0 10px;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+    @include depth(1);
+    @include flex(column);
+    &::before {
+      @include flex(center);
+      content: "Edit";
+      color: white;
+      width: 100%;
+      height: 100%;
+      font-size: 1.1rem;
+      background-color: rgba(0,0,0,0.4);
+      @include position(absolute, auto, auto);
+      transition: opacity $normal-speed $normal-ease;
+      opacity: 0;
+    }
+    &:hover::before {
+      opacity: 1;
+    }
+  }
 
   &__input {
     padding: 9px;
     border-radius: 2px;
     background-color: $tone-3;
     border: none;
-    max-width: 320px;
+    width: 100%;
     box-sizing: border-box;
 
-    &_large {
-      max-width: 600px;
+    &--textarea {
+      resize: vertical;
+      width: 100%;
+      min-height: 64px;
+    }
+    &:disabled {
+      cursor: not-allowed;
+      background-color: $tone-5;
     }
   }
 
   &__label {
     font-weight: bold;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
   }
 
   &__button {
@@ -28,14 +86,32 @@
     color: $tone-10;
     border-radius: 4px;
     border: none;
-    margin-top: 15px;
+    margin-left: 5px;
     font-weight: bold;
     padding: 12px 30px;
     max-width: 120px;
   }
 }
 
-textarea.profile__input {
-  resize: vertical;
-  min-height: 64px;
+@include tablet {
+  .profile {
+    &__content {
+      flex-direction: column;
+    }
+    &__col {
+      width: 90%;
+    }
+  }
+}
+
+@include tablet {
+  .profile {
+    &__col {
+      width: 100%;
+      padding: 0 0 16px;
+    }
+    &__avatar-wrapper {
+      margin: 6px 0 0;
+    }
+  }
 }

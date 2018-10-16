@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import localforage from 'localforage';
 import * as Pages from './../pages';
 import { Dashboard } from '.';
-import '../css/containers/app.css';
+import '../scss/containers/app.scss';
 import { setSessionAction } from '../redux/actions';
 import { selectSession } from '../selectors';
 

@@ -5,7 +5,7 @@
   width: $sidenav-expanded;
   color: white;
   padding-bottom: 50px;
-  transition: transform 700ms $normal-ease;
+  transition: transform 600ms $normal-ease;
   @include flex(flex-start, column);
   @include position(fixed, auto auto auto 0);
 
@@ -56,7 +56,7 @@
     background: none;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 700ms $normal-ease;
+    transition: opacity 600ms $normal-ease;
     @include flex(center, center, column);
     @include position(absolute, 20px -12px auto auto);
   }
@@ -66,11 +66,16 @@
     margin: 2px 0;
     border-radius: 1px;
     background-color: white;
+    transition: transform 400ms $normal-ease;
+    &--second {
+      transition: transform 400ms $normal-ease, opacity 400ms $normal-ease;
+    }
   }
 }
 
 @include tablet {
   .sidenav {
+    $self: &;
     animation: sidenav $long-speed $normal-ease backwards;
     @keyframes sidenav {
       from { transform: translate3d(-100%, 0, 0) }
@@ -90,6 +95,18 @@
       }
     }
     &--expanded {
+      & #{ $self }__bar {
+        &--first {
+          transform: translate3d(0, 6px, 0) rotate(315deg);
+        }
+        &--second {
+          transform: translate3d(0, 0, 0) rotate(360deg);
+          opacity: 0
+        }
+        &--third {
+          transform: translate3d(0, -6px, 0) rotate(-315deg);
+        }
+      }
       transform: translate3d(0, 0, 0);
       & ~ .page {
         transform: translate3d($sidenav-expanded - $sidenav-collapsed, 0, 0);

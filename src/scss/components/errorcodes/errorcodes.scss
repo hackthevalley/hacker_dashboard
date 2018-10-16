@@ -1,7 +1,8 @@
 .ErrorCodes {
   margin: 15px 0;
+  &--empty { margin: 0 }
 
-  &--error {
+  &__error {
     font-size: 0.8rem;
     color: tomato;
     margin: 5px 0;
