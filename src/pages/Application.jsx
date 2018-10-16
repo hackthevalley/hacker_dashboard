@@ -3,17 +3,6 @@ import {connect} from "react-redux";
 import {getEventsAction, getApplicationsAction} from "../redux/actions";
 import '../scss/pages/application.scss';
 
-const events = [
-  {
-    _id: 125,
-    name: "Hack The Valley III",
-    applications: [
-      { _id: 12415, name: "Hacker Application" },
-      { _id: 15, name: "Mentor Application", description: "You have walked the walk, now it's time for you to talk the talk" }
-    ]
-  }
-]
-
 class _Application extends Component {
 
   componentDidMount() {
@@ -23,7 +12,7 @@ class _Application extends Component {
   }
 
   render() {
-    const { applications } = this.props;
+    const { applications, events } = this.props;
     return (
       <section className="app">
         <h1>Applications</h1>
