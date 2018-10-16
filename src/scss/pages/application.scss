@@ -1,0 +1,90 @@
+@import '../colors';
+@import '../mixins';
+
+.app {
+  &__content {
+    @include flex(space-between, flex-start);
+    padding-top: 16px;
+  }
+
+  &__col {
+    width: calc(50% - 20px);
+    box-sizing: border-box;
+  }
+
+  &__items {
+    list-style-type: none;
+    border: 2px solid $tone-2;
+    border-bottom: none;
+    margin: 10px 0;
+  }
+
+  &__item {
+    padding: 25px;
+    background-color: white;
+    border-bottom: 2px solid $tone-2;
+    transition: box-shadow 400ms $normal-ease;
+    &--empty {
+      color: $tone-6;
+      padding: 60px 20px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  }
+  
+  &__shrug {
+    display: block;
+    font-size: 2rem;
+    transform: translate3d(0, 0, 0);
+    animation: app__shrug $long-speed $normal-ease infinite;
+    @keyframes app__shrug {
+      0% { transform: rotate(0deg) }
+      25% { transform: rotate(4deg) }
+      50% { transform: rotate(0deg) }
+      75% { transform: rotate(-4deg) }
+      100% { transform: rotate(0deg) }
+    }
+    &-header {
+      margin: 8px 0 0;
+    }
+  }
+
+  &__event {
+    padding-top: 6px;
+  }
+
+  &__description {
+    font-size: 0.95rem;
+  }
+
+  &__apply-btn {
+    background-color: $highlight;
+    color: $tone-10;
+    border-radius: 4px;
+    border: none;
+    margin-top: 10px;
+    font-weight: bold;
+    padding: 12px 30px;
+  }
+}
+
+@include desktop {
+  .app {
+    &__content {
+      flex-direction: column;
+    }
+
+    &__col {
+      width: 80%;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+@include tablet {
+  .app {
+    &__col {
+      width: 100%;
+    }
+  }
+}

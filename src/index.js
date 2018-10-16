@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 
 import { App } from './containers';
 import * as Reducers from './redux/reducers';
-import './css/index.css';
+import './scss/index.scss';
 
 const history = createBrowserHistory({
   basename: process.env.PUBLIC_URL

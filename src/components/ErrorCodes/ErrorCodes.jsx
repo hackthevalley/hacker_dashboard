@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import errorCodeToMessageMap from './errorCodeToMessageMap.json';
-import '../../css/components/errorcodes/errorcodes.css';
+import '../../scss/components/errorcodes/errorcodes.scss';
 
 export class ErrorCodes extends React.Component {
   static propTypes = {
@@ -23,11 +23,11 @@ export class ErrorCodes extends React.Component {
     }
 
     return (
-      <div className='ErrorCodes'>
+      <div className={`errorcodes${errorCodes.length === 0? " errorcides--empty": ""}`}>
         {errorCodes.map(errorCode => (
           <p
             key={errorCode}
-            className='ErrorCodes--error'
+            className='errorcodes__error'
           >
             {errorCodeToMessageMap[errorCode] || errorCode}
           </p>

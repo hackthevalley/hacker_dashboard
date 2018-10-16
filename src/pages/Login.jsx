@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import '../css/pages/login.css';
+import '../scss/pages/login.scss';
 import { LoginForm } from '../components';
 import { createHackerTokenAction, createHackerAction } from '../redux/actions';
 import { IsNotLoggedIn } from '../containers';

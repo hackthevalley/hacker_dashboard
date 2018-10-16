@@ -9,7 +9,7 @@ export class LoginForm extends React.Component {
       button,
       items,
       errorCodes,
-      ...remainingProps,
+      ...remainingProps
     } = this.props;
     return <form
       className={`${block}__form`}

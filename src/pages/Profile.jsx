@@ -1,40 +1,46 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import '../css/pages/profile.css';
-import { getMeAction, updateHackerAction } from '../redux/actions';
-import { selectHackersMe } from '../selectors';
-import { ErrorCodes } from '../components';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import '../scss/pages/profile.scss';
+import {getMeAction, updateHackerAction} from '../redux/actions';
+import {selectHackersMe} from '../selectors';
+import { Profile as avatar } from '../assets';
+import SchoolNameServiceProvider from "../providers/SchoolNameServiceProvider";
+import {Hacker} from "../models";
+import {ErrorCodes} from "../components/ErrorCodes";
 
 class _Profile extends Component {
-  state = {
-    updateMe: null,
-    updateMeErrorCodes: false,
+
+  constructor(props) {
+    super(props);
+    this.schoolList = SchoolNameServiceProvider.getList();
+    this.state = {
+      // The actual hacker's profile
+      me: new Hacker({})
+    };
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch(getMeAction());
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.me !== nextProps.me) {
-      this.setState({
-        updateMe: nextProps.me,
-      })
+  componentDidUpdate(prevProps) {
+    const { me } = this.props;
+    // Update this.state.me if a new prop is received
+    if (me !== prevProps.me) {
+      this.setState({ me })
     }
   }
 
   handleUpdateMe = async (event) => {
-    const {
-      dispatch,
-      me,
-    } = this.props;
+    const {dispatch} = this.props;
     event.preventDefault();
     this.setState({
       updateMeErrorCodes: false,
     });
     const formData = new FormData(event.target);
-    const action = await dispatch(updateHackerAction(me._id, {
+    // TODO: This can be simplified by using component state
+    const action = await dispatch(updateHackerAction(this.state.me._id, {
       first_name: formData.get('first_name') || null,
       last_name: formData.get('last_name') || null,
       gender: formData.get('gender') || null,
@@ -43,349 +49,190 @@ class _Profile extends Component {
       github: formData.get('github') || null,
       linkedin: formData.get('linkedin') || null,
       website: formData.get('website') || null,
-      // avatar: formData.get('avatar') || null,
       description: formData.get('description') || null,
     }));
     if (action.error) {
       this.setState({
         updateMeErrorCodes: action.error.errorCodes,
       });
-      return;
     }
-  }
+  };
+
+  handleTextChange = (e) => {
+    // First shallow copy a hacker instance
+    let newHacker = this.state.me.shallowCopy();
+    // Set new data, and set state
+    newHacker.set(e.target.name, e.target.value);
+    this.setState({me: newHacker});
+  };
 
   render() {
-    const { updateMe, updateMeErrorCodes } = this.state;
-    if (!updateMe) {
-      return null;
-    }
     return (
-      <form
-        className="profile"
-        onSubmit={this.handleUpdateMe}
-      >
-        <h1>Profile</h1>
+      <form className="profile" onSubmit={this.handleUpdateMe}>
+        <h1 className="profile__header">Profile</h1>
+        <h2>Personal Information</h2>
+        <div className="profile__content">
+          <div className="profile__col">
+            <div className="profile__form-item profile__form-item--avatar">
+              <label className="profile__label" htmlFor="avatar">Profile Image</label>
+              <div className="profile__avatar-wrapper">
+                <img id="avatar" className="profile__avatar" alt="Your uploaded profile" src={avatar} />
+              </div>
+            </div>
+          </div>
+          <div className="profile__col">
+            <div className="profile__form-item">
+              <label className="profile__label" htmlFor="first_name">First Name</label>
+              <input
+                id="first_name"
+                type="text"
+                className="profile__input"
+                name="first_name"
+                value={this.state.me.first_name}
+                autoComplete="given-name"
+                onChange={this.handleTextChange}
+                placeholder="john"
+              />
+            </div>
+            <div className="profile__form-item">
+              <label className="profile__label" htmlFor="last_name">Last Name</label>
+              <input
+                id="last_name"
+                type="text"
+                className="profile__input"
+                name="last_name"
+                value={this.state.me.last_name}
+                onChange={this.handleTextChange}
+                autoComplete="family-name"
+                placeholder="doe"
+              />
+            </div>
 
-        <label
-          className="profile__label"
-          htmlFor="email_address"
-        >
-          Email address
-        </label>
+            <div className="profile__form-item">
+              <label className="profile__label" htmlFor="gender">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                className="profile__input"
+                value={this.state.me.gender}
+                onChange={this.handleTextChange}
+                autoComplete="sex"
+              >
+                <option value="">Prefer not to answer</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
 
-        <input
-          id="email_address"
-          type="email"
-          className="profile__input"
-          name="email_address"
-          value={updateMe.email_address || ''}
-          autoComplete="email"
-          placeholder="john.doe@example.com"
-          disabled
-        />
+            <div className="profile__form-item">
+              <label className="profile__label" htmlFor="dob">Date of birth</label>
+              <input
+                id="dob"
+                type="date"
+                className="profile__input"
+                name="dob"
+                value={this.state.me.dob}
+                onChange={this.handleTextChange}
+                autoComplete="bday"
+              />
+            </div>
+          </div>
+        </div>
 
-        <br/>
+        <h2>Additional Information</h2>
+        <div className="profile__content">
+          <div className="profile__form-item profile__col">
+            <label className="profile__label" htmlFor="email_address">Email address</label>
+            <input 
+              id="email_address"
+              type="email"
+              className="profile__input"
+              name="email_address"
+              value={this.state.me.email_address}
+              autoComplete="email"
+              placeholder="john.doe@example.com"
+              disabled
+            />
+          </div>
 
-        <label
-          className="profile__label"
-          htmlFor="first_name"
-        >
-          First Name
-        </label>
+          <div className="profile__form-item profile__col">
+            <label className="profile__label" htmlFor="dob">University</label>
+            <input
+              id="school"
+              type="text"
+              className="profile__input"
+              name="school"
+              value={this.state.me.school}
+              autoComplete="off"
+              onChange={this.handleTextChange}
+              list="data-schools"
+            />
+          </div>
 
-        <input
-          id="first_name"
-          type="text"
-          className="profile__input"
-          name="first_name"
-          value={updateMe.first_name || ''}
-          autoComplete="given-name"
-          placeholder="john"
-        />
+          <div className="profile__form-item profile__col">
+            <label className="profile__label" htmlFor="github">GitHub</label>
+            <input
+              id="github"
+              type="text"
+              className="profile__input"
+              name="github"
+              value={this.state.me.github}
+              onChange={this.handleTextChange}
+              autoComplete="url"
+            />
+          </div>
 
-        <br/>
+          <div className="profile__form-item profile__col">
+            <label className="profile__label" htmlFor="linkedin">LinkedIn</label>
+            <input
+              id="linkedin"
+              type="text"
+              className="profile__input"
+              name="linkedin"
+              value={this.state.me.linkedin}
+              onChange={this.handleTextChange}
+              autoComplete="url"
+            />
+          </div>
 
-        <label
-          className="profile__label"
-          htmlFor="last_name"
-        >
-          Last Name
-        </label>
+          <div className="profile__form-item profile__col">
+            <label className="profile__label" htmlFor="website">Website/Portfolio</label>
+            <input
+              id="website"
+              type="text"
+              className="profile__input"
+              name="website"
+              value={this.state.me.website}
+              onChange={this.handleTextChange}
+              autoComplete="url"
+            />
+          </div>
+        </div>
 
-        <input
-          id="last_name"
-          type="text"
-          className="profile__input"
-          name="last_name"
-          value={updateMe.last_name || ''}
-          autoComplete="family-name"
-          placeholder="doe"
-        />
+        <h2>Optional Information</h2>
+        <div className="profile__content">
+          <div className="profile__form-item profile__col profile__col--full">
+            <label className="profile__label" htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              className="profile__input profile__input--textarea"
+              autoComplete="off"
+              rows="6"
+              onChange={this.handleTextChange}
+              value={this.state.me.description}
+            />
+          </div>
+        </div>
+          <div className="profile__form-item">
+            <input type="submit" value="Save" className="profile__button"
+            />
+          </div>
 
-        <br/>
-
-        <label
-          className="profile__label"
-          htmlFor="gender"
-        >
-          Gender
-        </label>
-
-        <select
-          id="gender"
-          name="gender"
-          className="profile__input"
-          value={updateMe.gender || ''}
-          autoComplete="sex"
-        >
-          <option value="">
-            Prefer not to answer
-          </option>
-          <option value="female">
-            Female
-          </option>
-          <option value="male">
-            Male
-          </option>
-          <option value="other">
-            Other
-          </option>
-        </select>
-
-        <br/>
-
-        <label
-          className="profile__label"
-          htmlFor="dob"
-        >
-          Date of birth
-        </label>
-
-        <input
-          id="dob"
-          type="date"
-          className="profile__input"
-          name="dob"
-          value={updateMe.dob || ''}
-          autoComplete="bday"
-        />
-
-        <br/>
-
-        <label
-          className="profile__label"
-          htmlFor="dob"
-        >
-          University
-        </label>
-
-        <input
-          id="school"
-          type="text"
-          className="profile__input"
-          name="school"
-          value={updateMe.school || ''}
-          autoComplete="off"
-          list="data-schools"
-        />
-
-        <br/>
-
-        <label
-          className="profile__label"
-          htmlFor="github"
-        >
-          GitHub
-        </label>
-
-        <input
-          id="github"
-          type="text"
-          className="profile__input"
-          name="github"
-          value={updateMe.github || ''}
-          autoComplete="url"
-        />
-
-        <br/>
-
-        <label
-          className="profile__label"
-          htmlFor="linkedin"
-        >
-          LinkedIn
-        </label>
-
-        <input
-          id="linkedin"
-          type="text"
-          className="profile__input"
-          name="linkedin"
-          value={updateMe.linkedin || ''}
-          autoComplete="url"
-        />
-
-        <br/>
-
-        <label
-          className="profile__label"
-          htmlFor="website"
-        >
-          Website/Portfolio
-        </label>
-
-        <input
-          id="website"
-          type="text"
-          className="profile__input"
-          name="website"
-          value={updateMe.website || ''}
-          autoComplete="url"
-        />
-
-        <br/>
-
-        {/* <label htmlFor="avatar">
-          Avatar
-        </label> */}
-
-        {/* <input
-          id="avatar"
-          type="text"
-          className="profile__input"
-          name="avatar"
-          value={updateMe.avatar || ''}
-          autoComplete="photo"
-        /> */}
-
-        {/* <br/> */}
-
-        <label
-          className="profile__label"
-          htmlFor="description"
-        >
-          Description
-        </label>
-
-        <textarea
-          id="description"
-          name="description"
-          className="profile__input profile__input_large"
-          autoComplete="off"
-        >
-          {updateMe.description || ''}
-        </textarea>
-
-        <br/>
-
-        <input
-          type="submit"
-          value="Save"
-          className="profile__button"
-        />
-
-        <ErrorCodes errorCodes={updateMeErrorCodes} />
-
-        {/* https://en.wikipedia.org/wiki/List_of_universities_in_Canada */}
+        <ErrorCodes errorCodes={this.state.updateMeErrorCodes}/>
         <datalist id="data-schools">
-          <option>Acadia University</option>
-          <option>Algoma University</option>
-          <option>Athabasca University</option>
-          <option>Atlantic School of Theology</option>
-          <option>Bishop's University</option>
-          <option>Booth University College</option>
-          <option>Brandon University</option>
-          <option>Brock University</option>
-          <option>Canadian Mennonite University</option>
-          <option>Cape Breton University</option>
-          <option>Capilano University</option>
-          <option>Carleton University</option>
-          <option>Concordia University</option>
-          <option>Crandall University</option>
-          <option>Dalhousie University</option>
-          <option>Dominican University College</option>
-          <option>École de technologie supérieure</option>
-          <option>École nationale d'administration publique</option>
-          <option>École Polytechnique de Montréal</option>
-          <option>Emily Carr University of Art and Design</option>
-          <option>Fairleigh Dickinson University</option>
-          <option>First Nations University of Canada</option>
-          <option>HEC Montréal</option>
-          <option>Huron University College</option>
-          <option>Institut national de la recherche scientifique</option>
-          <option>Kingswood University</option>
-          <option>Kwantlen Polytechnic University</option>
-          <option>Lakehead University</option>
-          <option>Laurentian University</option>
-          <option>MacEwan University</option>
-          <option>McGill University</option>
-          <option>McMaster University</option>
-          <option>Memorial University of Newfoundland</option>
-          <option>Mount Allison University</option>
-          <option>Mount Royal University</option>
-          <option>Mount Saint Vincent University</option>
-          <option>New York Institute of Technology</option>
-          <option>Nipissing University</option>
-          <option>NSCAD University</option>
-          <option>OCAD University</option>
-          <option>Queen's University</option>
-          <option>Quest University</option>
-          <option>Redeemer University College</option>
-          <option>Royal Military College of Canada</option>
-          <option>Royal Roads University</option>
-          <option>Ryerson University</option>
-          <option>Saint Francis Xavier University</option>
-          <option>Saint Mary's University</option>
-          <option>Saint Paul University</option>
-          <option>Simon Fraser University</option>
-          <option>St. Stephen's University</option>
-          <option>St. Thomas University</option>
-          <option>The King's University</option>
-          <option>Thompson Rivers University</option>
-          <option>Trent University</option>
-          <option>Trinity Western University</option>
-          <option>Tyndale University College</option>
-          <option>Université de Moncton</option>
-          <option>Université de Montréal</option>
-          <option>Université de Saint-Boniface</option>
-          <option>Université de Sherbrooke</option>
-          <option>Université du Québec à Chicoutimi</option>
-          <option>Université du Québec à Montréal</option>
-          <option>Université du Québec à Rimouski</option>
-          <option>Université du Québec à Trois-Rivières</option>
-          <option>Université du Québec en Abitibi-Témiscamingue</option>
-          <option>Université du Québec en Outaouais</option>
-          <option>Université Laval</option>
-          <option>Université Sainte-Anne</option>
-          <option>University Canada West</option>
-          <option>University College of the North</option>
-          <option>University of Alberta</option>
-          <option>University of British Columbia</option>
-          <option>University of Calgary</option>
-          <option>University of Fredericton</option>
-          <option>University of Guelph</option>
-          <option>University of King's College</option>
-          <option>University of Lethbridge</option>
-          <option>University of Manitoba</option>
-          <option>University of New Brunswick</option>
-          <option>University of Northern British Columbia</option>
-          <option>University of Ontario Institute of Technology</option>
-          <option>University of Ottawa</option>
-          <option>University of Prince Edward Island</option>
-          <option>University of Regina</option>
-          <option>University of Saskatchewan</option>
-          <option>University of the Fraser Valley</option>
-          <option>University of Toronto</option>
-          <option>University of Toronto Scarborough</option>
-          <option>University of Toronto Mississauga</option>
-          <option>University of Victoria</option>
-          <option>University of Waterloo</option>
-          <option>University of Western Ontario</option>
-          <option>University of Windsor</option>
-          <option>University of Winnipeg</option>
-          <option>Vancouver Island University</option>
-          <option>Wilfrid Laurier University</option>
-          <option>York University</option>
+          {this.schoolList.map(name => <option key={name}>{name}</option>)}
         </datalist>
       </form>
     )
