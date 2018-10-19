@@ -37,29 +37,29 @@ class _Application extends Component {
             }
             </ul>
           </div>
-          {/*<div className="app__col">*/}
-            {/*<h2>Open Applications</h2>*/}
-            {/*<div className="app__event">*/}
-              {/*{*/}
-                {/*events.map(({_id, name, applications}) =>*/}
-                  {/*<div key={ _id } className="app__event">*/}
-                    {/*<h3>{ name }</h3>*/}
-                    {/*<ul className="app__items">*/}
-                      {/*{*/}
-                        {/*applications.map(app =>*/}
-                          {/*<li key={app._id} className="app__item">*/}
-                            {/*<h4>{ app.name }</h4>*/}
-                            {/*<p className="app__description">{app.description ? app.description: "404: Description Not Found" }</p>*/}
-                            {/*<button type="button" className="app__apply-btn">Apply Now</button>*/}
-                          {/*</li>*/}
-                        {/*)*/}
-                      {/*}*/}
-                    {/*</ul>*/}
-                  {/*</div>*/}
-                {/*)*/}
-              {/*}*/}
-            {/*</div>*/}
-          {/*</div>*/}
+          <div className="app__col">
+            <h2>Open Applications</h2>
+            <div className="app__event">
+              {
+                events.map(({_id, name, applications}) =>
+                  <div key={ _id } className="app__event">
+                    <h3>{ name }</h3>
+                    <ul className="app__items">
+                      {
+                        applications.map(app =>
+                          <li key={app._id} className="app__item">
+                            <h4>{ app.name }</h4>
+                            <p className="app__description">{app.description ? app.description: "404: Description Not Found" }</p>
+                            <button type="button" className="app__apply-btn">Apply Now</button>
+                          </li>
+                        )
+                      }
+                    </ul>
+                  </div>
+                )
+              }
+            </div>
+          </div>
         </div>
       </section>
     )
