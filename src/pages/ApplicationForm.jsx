@@ -29,6 +29,7 @@ class _ApplicationForm extends Component {
   state = {
     questionErrorCodes: {},
     questionSaved: {},
+    canSubmit: false
   };
 
   componentDidMount() {
@@ -43,7 +44,7 @@ class _ApplicationForm extends Component {
       dispatch,
       me,
       application,
-      applicationQuestionsById,
+      applicationQuestionsById
     } = this.props;
     this.setState({
       questionErrorCodes: {},
@@ -81,15 +82,27 @@ class _ApplicationForm extends Component {
       [questionIds[i]]: action.error && action.error.errorCodes,
     }), {});
 
+
+    let canSubmit = true;
+    for(let i = 0; i < application.questions.length; i++) {
+      if(application.questions[i].required) {
+        if(!answers[application.questions[i]._id][0]) {
+          canSubmit = false;
+          break;
+        }
+      }
+    }
+
     this.setState({
       questionErrorCodes,
+      canSubmit,
       questionSaved: Object.keys(questionErrorCodes)
         .reduce((res, question_id) => ({
           ...res,
           [question_id]: !questionErrorCodes[question_id],
         }), {})
     });
-  }
+  };
 
   render() {
     const {
@@ -131,7 +144,7 @@ class _ApplicationForm extends Component {
             You can keep updating your application until you decide to submit.
           </small><br/>
           <button type="submit" className="app__apply-btn">Save</button>&nbsp;&nbsp;
-          <button type="button" className="app__apply-btn app__apply-btn--disabled">Submit</button>
+          <button type="button" className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")} disabled={!this.state.canSubmit}>Submit</button>
         </form>
       </section>
     )
