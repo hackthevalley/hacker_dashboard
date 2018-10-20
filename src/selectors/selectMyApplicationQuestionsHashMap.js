@@ -22,12 +22,16 @@ export const selectMyApplicationQuestionsHashMap = createSelector(
   (
     me,
     myHackerApp
-  ) => (
-    me &&
+  ) => me && (
+    // If hacker has a hacker application for this application
     myHackerApp
-  ) && myHackerApp.answers
-    .reduce((res, answer) => ({
-      ...res,
-      [answer.question_id]: answer.answer,
-    }), {})
+    // Construct a hash map<question_id, answer>
+    ? myHackerApp.answers
+      .reduce((res, answer) => ({
+        ...res,
+        [answer.question_id]: answer.answer,
+      }), {})
+    // Hacker has no answers, return an empty hash map
+    : {}
+  )
 )

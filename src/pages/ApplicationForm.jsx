@@ -61,8 +61,8 @@ class _ApplicationForm extends Component {
     let hackerApplicationId = hackerApplication && hackerApplication._id;
 
     if (!hackerApplication) {
-      const action = await dispatch(createHackerApplicationAction(application._id));
-      hackerApplicationId = action[0].application._id;
+      const [action] = await dispatch(createHackerApplicationAction(application._id));
+      hackerApplicationId = action.application._id;
     }
 
     const questionIds = Object.keys(answers);
@@ -99,7 +99,7 @@ class _ApplicationForm extends Component {
       questionErrorCodes,
       questionSaved,
     } = this.state;
-    if (!me || !application) {
+    if (!me || !application || !myApplicationAnswersByQuestionId) {
       return null;
     }
     return (
@@ -127,7 +127,7 @@ class _ApplicationForm extends Component {
 
 export const ApplicationForm = connect((state, props) => ({
   me: selectHackersMe(state),
-  myApplicationAnswersByQuestionId: selectMyApplicationQuestionsHashMap(state, props) || [],
+  myApplicationAnswersByQuestionId: selectMyApplicationQuestionsHashMap(state, props),
   application: selectApplicationForm(state, props),
   applicationQuestionsById: selectApplicationFormQuestionsHashMap(state, props),
 }))(_ApplicationForm);
