@@ -61,8 +61,8 @@ class _ApplicationForm extends Component {
     let hackerApplicationId = hackerApplication && hackerApplication._id;
 
     if (!hackerApplication) {
-      const action = await dispatch(createHackerApplicationAction(application._id));
-      hackerApplicationId = action[0].application._id;
+      const [action] = await dispatch(createHackerApplicationAction(application._id));
+      hackerApplicationId = action.application._id;
     }
 
     const questionIds = Object.keys(answers);
