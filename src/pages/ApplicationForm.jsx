@@ -99,7 +99,7 @@ class _ApplicationForm extends Component {
       questionErrorCodes,
       questionSaved,
     } = this.state;
-    if (!me || !application) {
+    if (!me || !application || !myApplicationAnswersByQuestionId) {
       return null;
     }
     return (
@@ -127,7 +127,7 @@ class _ApplicationForm extends Component {
 
 export const ApplicationForm = connect((state, props) => ({
   me: selectHackersMe(state),
-  myApplicationAnswersByQuestionId: selectMyApplicationQuestionsHashMap(state, props) || [],
+  myApplicationAnswersByQuestionId: selectMyApplicationQuestionsHashMap(state, props),
   application: selectApplicationForm(state, props),
   applicationQuestionsById: selectApplicationFormQuestionsHashMap(state, props),
 }))(_ApplicationForm);
