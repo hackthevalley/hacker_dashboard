@@ -72,8 +72,15 @@
     padding: 12px 30px;
     font-size: 14px;
     text-decoration: none;
+    transition: all ease 0.3s;
+    outline: none;
+    &:hover {
+      background-color: darken($highlight, 5%);
+      transition: all ease 0.3s;
+    }
     &--disabled {
       opacity: 0.5;
+      transition: all ease 0.3s;
     }
   }
 

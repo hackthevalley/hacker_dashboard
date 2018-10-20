@@ -29,7 +29,8 @@ class _ApplicationForm extends Component {
   state = {
     questionErrorCodes: {},
     questionSaved: {},
-    canSubmit: false
+    canSubmit: false,
+    changed: true
   };
 
   componentDidMount() {
@@ -96,6 +97,7 @@ class _ApplicationForm extends Component {
     this.setState({
       questionErrorCodes,
       canSubmit,
+      changed: false,
       questionSaved: Object.keys(questionErrorCodes)
         .reduce((res, question_id) => ({
           ...res,
@@ -135,15 +137,14 @@ class _ApplicationForm extends Component {
               <ApplicationFormField
                 {...question}
                 answers={myApplicationAnswersByQuestionId[question._id]}
+                onChange={() => this.setState({changed: true, canSubmit: false})}
               />
-              {questionSaved[question._id] && (<p style={{color: '#4c4' }}>Saved</p>)}
-              <ErrorCodes errorCodes={questionErrorCodes[question._id]} />
             </Fragment>
           ))}
           <small className="app__small-label">
             You can keep updating your application until you decide to submit.
           </small><br/>
-          <button type="submit" className="app__apply-btn">Save</button>&nbsp;&nbsp;
+          <button type="submit" className={"app__apply-btn " + (!this.state.changed ? "app__apply-btn--disabled" : "'")} disabled={!this.state.changed}>Save</button>&nbsp;&nbsp;
           <button type="button" className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")} disabled={!this.state.canSubmit}>Submit</button>
         </form>
       </section>

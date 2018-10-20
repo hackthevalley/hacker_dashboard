@@ -78,7 +78,7 @@ export function ApplicationFormField(props) {
 
       <p>{props.description}</p>
 
-      <FieldComponent {...fieldProps} />
+      <FieldComponent {...fieldProps} onChange={props.onChange} />
     </label>
   );
 }
