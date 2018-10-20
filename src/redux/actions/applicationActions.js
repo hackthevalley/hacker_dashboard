@@ -20,6 +20,11 @@ export function getApplicationsAction() {
                         application {
                             _id
                             name
+                            description
+                            event {
+                                _id
+                                name
+                            }
                         }
                     }
                 }

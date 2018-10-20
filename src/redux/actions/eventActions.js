@@ -17,6 +17,10 @@ export function getEventsAction() {
                       name
                       description
                       open
+                      event {
+                        _id
+                        name
+                      }
                       questions {
                         _id
                         name

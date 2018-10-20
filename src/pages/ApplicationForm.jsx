@@ -4,6 +4,8 @@ import { ApplicationFormField, ErrorCodes } from '../components';
 import { getApplicationsAction, getEventsAction, getMeAction, createHackerApplicationAction, updateHackerApplicationQuestionAction } from "../redux/actions";
 import '../scss/pages/application.scss';
 import { selectApplicationForm, selectHackersMe, selectMyApplicationQuestionsHashMap, selectApplicationFormQuestionsHashMap } from '../selectors';
+import {Link} from "react-router-dom";
+
 
 async function chain(arr, fn) {
   const result = []
@@ -103,24 +105,35 @@ class _ApplicationForm extends Component {
       return null;
     }
     return (
-      <form onSubmit={this.handleSave}>
-        <h1>{application.name}</h1>
+      <section className="app">
+        <form onSubmit={this.handleSave}>
+          <Link
+            className="app__link-btn"
+            to={`/app`}
+          >
+            Back to Applications
+          </Link>
+          <h1>{application.event.name} - {application.name}</h1>
 
-        <p>{application.description}</p>
-
-        {application.questions.map((question) => (
-          <Fragment key={question._id}>
-            <ApplicationFormField
-              {...question}
-              answers={myApplicationAnswersByQuestionId[question._id]}
-            />
-            {questionSaved[question._id] && (<p style={{color: '#4c4' }}>Saved</p>)}
-            <ErrorCodes errorCodes={questionErrorCodes[question._id]} />
-          </Fragment>
-        ))}
-
-        <button type="submit">Save</button>
-      </form>
+          <p className="app__description">{application.description}</p>
+          <br/>
+          {application.questions.map((question) => (
+            <Fragment key={question._id}>
+              <ApplicationFormField
+                {...question}
+                answers={myApplicationAnswersByQuestionId[question._id]}
+              />
+              {questionSaved[question._id] && (<p style={{color: '#4c4' }}>Saved</p>)}
+              <ErrorCodes errorCodes={questionErrorCodes[question._id]} />
+            </Fragment>
+          ))}
+          <small className="app__small-label">
+            You can keep updating your application until you decide to submit.
+          </small><br/>
+          <button type="submit" className="app__apply-btn">Save</button>&nbsp;&nbsp;
+          <button type="button" className="app__apply-btn app__apply-btn--disabled">Submit</button>
+        </form>
+      </section>
     )
   }
 }

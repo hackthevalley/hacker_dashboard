@@ -13,6 +13,16 @@ class _Application extends Component {
     dispatch(getApplicationsAction());
   }
 
+  applicationStarted = (id) => {
+    const applications = this.props.applications || [];
+    for(let i = 0; i < applications.length; i++) {
+      if(applications[i].application._id === id) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   render() {
     const { applications, events } = this.props;
     return (
@@ -25,10 +35,24 @@ class _Application extends Component {
             <ul className="app__items">
             {
               applications.length > 0?
-              applications.map((app, key) =>
-                // TODO: style when we have something
-                <li className="app__item">REEEEEEEEEEEE</li>
-              ):
+              applications.map((app, key) => {
+                return (
+                  <li className="app__item" key={key}>
+                    <h3>{app.application.event.name} - {app.application.name}</h3>
+                    <p
+                      className="app__description">{app.application.description ? app.application.description : "404: Description Not Found"}</p>
+                    <small className="app__small-label">
+                      You haven't submitted your application yet, please ensure you submit your application before the deadline.
+                    </small>
+                    <Link
+                      className="app__apply-btn"
+                      to={`/app/${app.application._id}`}
+                    >
+                      Continue Application
+                    </Link>
+                  </li>
+                )
+              }):
               <li className="app__item app__item--empty">
                 <span className="app__shrug">¯\_(ツ)_/¯</span>
                 <h3 className="app__shrug-header">No applications found</h3>
@@ -46,20 +70,41 @@ class _Application extends Component {
                     <h3>{ name }</h3>
                     <ul className="app__items">
                       {
-                        applications.map(app =>
-                          <li key={app._id} className="app__item">
-                            <h4>{ app.name }</h4>
+                        applications.map(app => {
+                          return (
+                            <li key={app._id} className="app__item">
+                              <h4>{app.name}</h4>
+                              {app.open ? (
+                                <React.Fragment>
+                                {!this.applicationStarted(app._id) ? (
+                                    <React.Fragment>
+                                      <p
+                                        className="app__description">{app.description ? app.description : "404: Description Not Found"}</p>
+                                      <Link
+                                        className="app__apply-btn"
+                                        to={`/app/${app._id}`}
+                                      >
+                                        Start Application
+                                      </Link>
+                                    </React.Fragment>
+                                  ): (
+                                    <small className="app__small-label">
+                                      You already started this application, check My Applications section for more details.
+                                    </small>
+                                  )}
+                                </React.Fragment>
+                              ) : (
+                                <Link
+                                  className="app__apply-btn app__apply-btn--disabled"
+                                  to={`/app`}
+                                >
+                                  Application Not Yet Open
+                                </Link>
+                              )}
 
-                            <p className="app__description">{app.description ? app.description: "404: Description Not Found" }</p>
-
-                            <Link
-                              className="app__apply-btn"
-                              to={`/app/${app._id}`}
-                            >
-                              Start Application
-                            </Link>
-                          </li>
-                        )
+                            </li>
+                          )
+                        })
                       }
                     </ul>
                   </div>
