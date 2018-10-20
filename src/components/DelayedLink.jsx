@@ -1,9 +1,5 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import { pageTransition } from '../redux/actions';
 
 let timer;
 class _DelayedLink extends React.Component {
@@ -21,20 +17,15 @@ class _DelayedLink extends React.Component {
   }
 
   click(e) {
-    const { history, to, onClick, pageTransition, noPush, delay = 0 } = this.props;
+    const { history, to, onStart, onEnd, delay = 0 } = this.props;
     e.preventDefault();
-    if (onClick) {
-      if (timer) { window.clearTimeout(timer); timer = null }
-      onClick();
-      pageTransition();
-      if (!noPush) {
-        timer = window.setTimeout(() => history.push(to), delay);
-      }
-    }
+    if (onStart) { onStart(); }
+    if (timer) { window.clearTimeout(timer); timer = null }
+    timer = window.setTimeout(() => {
+      if (onEnd) { onEnd(); }
+      history.push(to);
+    }, delay);
   }
 }
-const mapDispatchToProps = dispatch => bindActionCreators({
-  pageTransition
-}, dispatch);
 
-export const DelayedLink = withRouter(connect(null, mapDispatchToProps)(_DelayedLink));
+export const DelayedLink = withRouter(_DelayedLink);
