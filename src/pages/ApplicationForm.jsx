@@ -62,7 +62,6 @@ class _ApplicationForm extends Component {
 
     if (!hackerApplication) {
       const action = await dispatch(createHackerApplicationAction(application._id));
-      console.log(action);
       hackerApplicationId = action[0].application._id;
     }
 
