@@ -9,7 +9,6 @@ export function getEventsAction() {
     return async (dispatch) => {
         try {
             const promise = htv.Graph.query(`{
-                
                   events {
                     _id
                     name
@@ -17,14 +16,19 @@ export function getEventsAction() {
                       _id
                       name
                       description
+                      open
                       questions {
+                        _id
                         name
                         question_type
+                        description
                         required
+                        choices
+                        max_characters
                       }
                     }
                   }
-                
+
               }`);
             dispatch({type: FETCH_LOADING, promise});
             const result = await promise;

@@ -12,6 +12,7 @@ const ROUTES = [
   { path: "/home", component: Pages.Home },
   { path: "/profile", component: Pages.Profile },
   { path: "/app", component: Pages.Application },
+  { path: "/app/:id", component: Pages.ApplicationForm },
   { path: "/faq", component: Pages.Faq },
   { path: "/contact", component: Pages.Contact }
 ];

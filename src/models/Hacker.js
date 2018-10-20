@@ -16,6 +16,7 @@ export class Hacker extends Model {
     "website",
     "description",
     "avatar",
+    "applications",
     "created_at",
     "updated_at"
   ]) {

@@ -20,7 +20,7 @@ export function getApplicationsAction() {
                         application {
                             _id
                             name
-                        }   
+                        }
                     }
                 }
             }`);

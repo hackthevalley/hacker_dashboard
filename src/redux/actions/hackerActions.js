@@ -8,6 +8,10 @@ export const GETME_FAIL = 'GETME_FAIL';
 export const GETME_SUCCESS = 'GETME_SUCCESS';
 export const UPDATEME_FAIL = 'UPDATEME_FAIL';
 export const UPDATEME_SUCCESS = 'UPDATEME_SUCCESS';
+export const CREATEHACKERAPPLICATION_FAIL = 'CREATEHACKERAPPLICATION_FAIL';
+export const CREATEHACKERAPPLICATION_SUCCESS = 'CREATEHACKERAPPLICATION_SUCCESS';
+export const UPDATEHACKERAPPLICATIONQUESTION_FAIL = 'UPDATEHACKERAPPLICATIONQUESTION_FAIL';
+export const UPDATEHACKERAPPLICATIONQUESTION_SUCCESS = 'UPDATEHACKERAPPLICATIONQUESTION_SUCCESS';
 
 export function getMeAction() {
   return async (dispatch) => {
@@ -28,7 +32,22 @@ export function getMeAction() {
           avatar,
           promo_email,
           created_at,
-          updated_at
+          updated_at,
+          applications {
+            _id
+            application {
+              _id
+            }
+            answers {
+              _id
+              question {
+                _id
+              }
+              question_id
+              answer
+            }
+            submitted_at
+          }
         }
       }`);
       dispatch({ type: FETCH_LOADING, promise });
@@ -77,6 +96,67 @@ export function updateHackerAction(hacker_id, hacker) {
       const error = new HttpRequestError(errorCodes);
       return Promise.all([
         dispatch({ type: UPDATEME_FAIL, error }),
+        dispatch({ type: FETCH_FAIL, error }),
+      ]);
+    }
+  }
+}
+
+export function createHackerApplicationAction(application_id) {
+  return async (dispatch) => {
+    try {
+      const promise = htv.HackerApplication.create(application_id);
+      dispatch({ type: FETCH_LOADING, promise });
+      const hacker_application_id = await promise;
+      return Promise.all([
+        dispatch({
+          type: CREATEHACKERAPPLICATION_SUCCESS,
+          application: {
+            _id: hacker_application_id,
+            application: {
+              _id: application_id
+            },
+            answers: [],
+            submitted_at: null,
+          },
+        }),
+        dispatch({ type: FETCH_SUCCESS }),
+      ]);
+    } catch (err) {
+      const errorCodes = err.graphQLErrors
+        ? err.graphQLErrors.map(err => err.message)
+        : err.errorCodes;
+      const error = new HttpRequestError(errorCodes);
+      return Promise.all([
+        dispatch({ type: CREATEHACKERAPPLICATION_FAIL, error }),
+        dispatch({ type: FETCH_FAIL, error }),
+      ]);
+    }
+  }
+}
+
+export function updateHackerApplicationQuestionAction(hacker_application_id, question_id, answers) {
+  return async (dispatch) => {
+    try {
+      const promise = htv.HackerApplication.updateQuestion(hacker_application_id, question_id, answers);
+      dispatch({ type: FETCH_LOADING, promise });
+      await promise;
+      return Promise.all([
+        dispatch({
+          type: UPDATEHACKERAPPLICATIONQUESTION_SUCCESS,
+          hacker_application_id,
+          question_id,
+          answers,
+        }),
+        dispatch({ type: FETCH_SUCCESS }),
+      ]);
+    } catch (err) {
+      const errorCodes = err.graphQLErrors
+        ? err.graphQLErrors.map(err => err.message)
+        : err.errorCodes;
+      const error = new HttpRequestError(errorCodes);
+      return Promise.all([
+        dispatch({ type: UPDATEHACKERAPPLICATIONQUESTION_FAIL, error }),
         dispatch({ type: FETCH_FAIL, error }),
       ]);
     }

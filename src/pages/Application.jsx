@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
+import {Link} from 'react-router-dom';
 import {getEventsAction, getApplicationsAction} from "../redux/actions";
 import '../scss/pages/application.scss';
 import {Announcement} from "../components/Announcements";
@@ -49,8 +50,15 @@ class _Application extends Component {
                         applications.map(app =>
                           <li key={app._id} className="app__item">
                             <h4>{ app.name }</h4>
+
                             <p className="app__description">{app.description ? app.description: "404: Description Not Found" }</p>
-                            <button type="button" className="app__apply-btn">Apply Now</button>
+
+                            <Link
+                              className="app__apply-btn"
+                              to={`/app/${app._id}`}
+                            >
+                              Apply Now
+                            </Link>
                           </li>
                         )
                       }
