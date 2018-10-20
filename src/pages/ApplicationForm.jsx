@@ -27,7 +27,7 @@ class _ApplicationForm extends Component {
   state = {
     questionErrorCodes: {},
     questionSaved: {},
-  }
+  };
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -36,7 +36,7 @@ class _ApplicationForm extends Component {
     dispatch(getApplicationsAction());
   }
 
-  handleSubmit = async (event) => {
+  handleSave = async (event) => {
     const {
       dispatch,
       me,
@@ -57,12 +57,13 @@ class _ApplicationForm extends Component {
       }), {});
 
     const hackerApplication = me.applications.find(
-      hackerApp => hackerApp.application._id == application._id);
+      hackerApp => hackerApp.application._id === application._id);
     let hackerApplicationId = hackerApplication && hackerApplication._id;
 
     if (!hackerApplication) {
       const action = await dispatch(createHackerApplicationAction(application._id));
-      hackerApplicationId = action.hacker_application_id;
+      console.log(action);
+      hackerApplicationId = action[0].application._id;
     }
 
     const questionIds = Object.keys(answers);
@@ -103,13 +104,13 @@ class _ApplicationForm extends Component {
       return null;
     }
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSave}>
         <h1>{application.name}</h1>
 
         <p>{application.description}</p>
 
         {application.questions.map((question) => (
-          <Fragment>
+          <Fragment key={question._id}>
             <ApplicationFormField
               {...question}
               answers={myApplicationAnswersByQuestionId[question._id]}
@@ -119,7 +120,7 @@ class _ApplicationForm extends Component {
           </Fragment>
         ))}
 
-        <input type="submit" />
+        <button type="submit">Save</button>
       </form>
     )
   }
@@ -127,7 +128,7 @@ class _ApplicationForm extends Component {
 
 export const ApplicationForm = connect((state, props) => ({
   me: selectHackersMe(state),
-  myApplicationAnswersByQuestionId: selectMyApplicationQuestionsHashMap(state, props),
+  myApplicationAnswersByQuestionId: selectMyApplicationQuestionsHashMap(state, props) || [],
   application: selectApplicationForm(state, props),
   applicationQuestionsById: selectApplicationFormQuestionsHashMap(state, props),
 }))(_ApplicationForm);

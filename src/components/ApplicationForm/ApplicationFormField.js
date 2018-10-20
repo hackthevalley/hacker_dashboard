@@ -18,21 +18,21 @@ const questionTypeToComponent = {
 const questionTypeToComponentProps = {
   email: (question) => ({
     name: question._id,
-    required: question.required,
+    // required: question.required,
     type: 'email',
     defaultValue: question.answers && question.answers[0],
   }),
 
   date: (question) => ({
     name: question._id,
-    required: question.required,
+    // required: question.required,
     type: 'date',
     defaultValue: question.answers && question.answers[0],
   }),
 
   short: (question) => ({
     name: question._id,
-    required: question.required,
+    // required: question.required,
     type: 'text',
     maxLength: question.max_characters,
     defaultValue: question.answers && question.answers[0],
@@ -40,7 +40,7 @@ const questionTypeToComponentProps = {
 
   long: (question) => ({
     name: question._id,
-    required: question.required,
+    // required: question.required,
     rows: 5,
     maxLength: question.max_characters,
     defaultValue: question.answers && question.answers[0],
@@ -48,7 +48,7 @@ const questionTypeToComponentProps = {
 
   radio: (question) => ({
     name: question._id,
-    required: question.required,
+    // required: question.required,
     type: 'radio',
     options: question.choices,
     defaultValue: question.answers && question.answers[0],
@@ -56,14 +56,14 @@ const questionTypeToComponentProps = {
 
   checkbox: (question) => ({
     name: question._id,
-    required: question.required,
+    // required: question.required,
     type: 'checkbox',
     defaultChecked: question.answers && question.answers[0] === 'Yes',
   }),
 
   choice: (question) => ({
     name: question._id,
-    required: question.required,
+    // required: question.required,
     options: question.choices,
     defaultValue: question.answers && question.answers[0],
   }),

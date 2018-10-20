@@ -71,10 +71,6 @@ class _Profile extends Component {
     return (
       <form className="profile" onSubmit={this.handleUpdateMe}>
         <h1 className="profile__header">Profile</h1>
-          <Announcement>
-              HTV 3 applications will be released soon, we will send you an email once it is available.<br/>
-            <small>At the mean time, you can fill out some basic information below.</small>
-          </Announcement>
         <h2>Personal Information</h2>
           <small>Fill out your information so we can know a bit about you!</small>
           <br/>

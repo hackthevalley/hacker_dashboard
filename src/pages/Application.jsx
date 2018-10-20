@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
 import {getEventsAction, getApplicationsAction} from "../redux/actions";
 import '../scss/pages/application.scss';
-import {Announcement} from "../components/Announcements";
+import {selectHackersMe} from "../selectors";
 
 class _Application extends Component {
 
@@ -19,8 +19,7 @@ class _Application extends Component {
       <section className="app">
         <h1>Applications</h1>
         <br/>
-          <Announcement>HTV 3 applications will be released soon, we will send you an email once it is available.</Announcement>
-        <div className="app__content">
+          <div className="app__content">
           <div className="app__col">
             <h2>My Applications</h2>
             <ul className="app__items">
@@ -57,7 +56,7 @@ class _Application extends Component {
                               className="app__apply-btn"
                               to={`/app/${app._id}`}
                             >
-                              Apply Now
+                              Start Application
                             </Link>
                           </li>
                         )
@@ -75,6 +74,7 @@ class _Application extends Component {
 }
 
 export const Application = connect((state) => ({
+  me: selectHackersMe(state),
   events: state.events.allEvents,
   applications: state.applications.allApplications
 }))(_Application);
