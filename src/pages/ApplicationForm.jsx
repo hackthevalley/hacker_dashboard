@@ -131,7 +131,7 @@ class _ApplicationForm extends Component {
           <h1>{application.event.name} - {application.name}</h1>
 
           <p className="app__description">{application.description}</p>
-          <br/>
+
           {application.questions.map((question) => (
             <Fragment key={question._id}>
               <ApplicationFormField
