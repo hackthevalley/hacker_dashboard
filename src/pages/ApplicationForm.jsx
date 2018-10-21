@@ -1,9 +1,20 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from "react-redux";
+import React, {Component, Fragment} from 'react';
+import {connect} from "react-redux";
 import {ApplicationFormField, DelayedLink, ErrorCodes} from '../components';
-import { getApplicationsAction, getEventsAction, getMeAction, createHackerApplicationAction, updateHackerApplicationQuestionAction } from "../redux/actions";
+import {
+  getApplicationsAction,
+  getEventsAction,
+  getMeAction,
+  createHackerApplicationAction,
+  updateHackerApplicationQuestionAction
+} from "../redux/actions";
 import '../scss/pages/application.scss';
-import { selectApplicationForm, selectHackersMe, selectMyApplicationQuestionsHashMap, selectApplicationFormQuestionsHashMap } from '../selectors';
+import {
+  selectApplicationForm,
+  selectHackersMe,
+  selectMyApplicationQuestionsHashMap,
+  selectApplicationFormQuestionsHashMap
+} from '../selectors';
 import {Link} from "react-router-dom";
 import {BackButton} from "../components/Navigations";
 
@@ -35,7 +46,7 @@ class _ApplicationForm extends Component {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch(getMeAction());
     dispatch(getEventsAction());
     dispatch(getApplicationsAction());
@@ -86,9 +97,9 @@ class _ApplicationForm extends Component {
 
 
     let canSubmit = true;
-    for(let i = 0; i < application.questions.length; i++) {
-      if(application.questions[i].required) {
-        if(!answers[application.questions[i]._id][0]) {
+    for (let i = 0; i < application.questions.length; i++) {
+      if (application.questions[i].required) {
+        if (!answers[application.questions[i]._id][0]) {
           canSubmit = false;
           break;
         }
@@ -123,25 +134,37 @@ class _ApplicationForm extends Component {
     return (
       <section className="app">
         <form onSubmit={this.handleSave}>
-          <BackButton to="/app" text="Back" />
-          <h1>{application.event.name} - {application.name}</h1>
+          <section className="app__form">
+            <BackButton to="/app" text="Back"/>
+            <h1>{application.event.name} - {application.name}</h1>
 
-          <p className="app__description">{application.description}</p>
+            <p className="app__description">{application.description}</p>
 
-          {application.questions.map((question) => (
-            <Fragment key={question._id}>
-              <ApplicationFormField
-                {...question}
-                answers={myApplicationAnswersByQuestionId[question._id]}
-                onChange={() => this.setState({changed: true, canSubmit: false})}
-              />
-            </Fragment>
-          ))}
-          <small className="app__small-label">
-            You can keep updating your application until you decide to submit.
-          </small><br/>
-          <button type="submit" className={"app__apply-btn " + (!this.state.changed ? "app__apply-btn--disabled" : "'")} disabled={!this.state.changed}>Save</button>&nbsp;&nbsp;
-          <button type="button" className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")} disabled={!this.state.canSubmit}>Submit</button>
+            {application.questions.map((question) => (
+              <Fragment key={question._id}>
+                <ApplicationFormField
+                  {...question}
+                  answers={myApplicationAnswersByQuestionId[question._id]}
+                  onChange={() => this.setState({changed: true, canSubmit: false})}
+                />
+              </Fragment>
+            ))}
+          </section>
+          <aside className="app__action-panel">
+            <small className="app__small-label">
+              You can keep updating your application until you decide to submit.
+            </small>
+            <br/>
+            <button type="submit"
+                    className={"app__apply-btn " + (!this.state.changed ? "app__apply-btn--disabled" : "'")}
+                    disabled={!this.state.changed}>Save
+            </button>
+            &nbsp;&nbsp;
+            <button type="button"
+                    className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")}
+                    disabled={!this.state.canSubmit}>Submit
+            </button>
+          </aside>
         </form>
       </section>
     )
