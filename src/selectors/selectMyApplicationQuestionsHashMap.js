@@ -3,7 +3,7 @@ import { selectHackersMe } from "./selectHackersMe";
 
 const selectIdFromRoute = (state, props) => {
   return props.match.params.id;
-}
+};
 
 export const selectMyApplicationForm = createSelector(
   [
@@ -12,7 +12,7 @@ export const selectMyApplicationForm = createSelector(
   ],
   (me, applicationId) => me &&
     me.applications.find(hackerApp => hackerApp.application._id === applicationId)
-)
+);
 
 export const selectMyApplicationQuestionsHashMap = createSelector(
   [

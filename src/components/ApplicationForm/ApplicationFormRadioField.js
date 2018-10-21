@@ -13,7 +13,7 @@ export function ApplicationFormRadioField({
             {...remainingProps}
             value={option}
             defaultChecked={defaultValue === option}
-          /> {option}
+          /> {option} &nbsp;&nbsp;
         </label>
       ))}
     </Fragment>

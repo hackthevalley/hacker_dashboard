@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 
 export function ApplicationFormCheckboxField(props) {
   return (
-    <input {...props} />
+    <Fragment>
+      <input {...props} />
+    </Fragment>
   );
 }
