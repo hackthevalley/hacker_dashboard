@@ -4,3 +4,4 @@ export * from './selectApplications';
 export * from './selectApplicationForm';
 export * from './selectApplicationFormQuestionsHashMap';
 export * from './selectMyApplicationQuestionsHashMap';
+export * from './selectEventsWithMyApplicationsFlagged';

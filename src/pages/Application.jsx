@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
 import {getEventsAction, getApplicationsAction} from "../redux/actions";
 import '../scss/pages/application.scss';
-import {selectHackersMe} from "../selectors";
+import {selectHackersMe, selectApplications, selectEventsWithMyApplicationsFlagged} from "../selectors";
 
 class _Application extends Component {
 
@@ -13,18 +13,14 @@ class _Application extends Component {
     dispatch(getApplicationsAction());
   }
 
-  applicationStarted = (id) => {
-    const applications = this.props.applications || [];
-    for(let i = 0; i < applications.length; i++) {
-      if(applications[i].application._id === id) {
-        return true;
-      }
-    }
-    return false;
-  };
-
   render() {
-    const { applications, events } = this.props;
+    const {
+      myApplications,
+      eventsWithMyApplicationsFlagged,
+    } = this.props;
+    if (!myApplications || !eventsWithMyApplicationsFlagged) {
+      return null;
+    }
     return (
       <section className="app">
         <h1>Applications</h1>
@@ -34,8 +30,8 @@ class _Application extends Component {
             <h2>My Applications</h2>
             <ul className="app__items">
             {
-              applications.length > 0?
-              applications.map((app, key) => {
+              myApplications.length > 0?
+              myApplications.map((app, key) => {
                 return (
                   <li className="app__item" key={key}>
                     <h3>{app.application.event.name} - {app.application.name}</h3>
@@ -65,18 +61,18 @@ class _Application extends Component {
             <h2>Open Applications</h2>
             <div className="app__event">
               {
-                events.map(({_id, name, applications}) =>
+                eventsWithMyApplicationsFlagged.map(({_id, name, applications}) =>
                   <div key={ _id } className="app__event">
                     <h3>{ name }</h3>
                     <ul className="app__items">
                       {
-                        applications.map(app => {
+                        applications.map(app => {console.log(app)
                           return (
                             <li key={app._id} className="app__item">
                               <h4>{app.name}</h4>
                               {app.open ? (
                                 <React.Fragment>
-                                {!this.applicationStarted(app._id) ? (
+                                {!app.isStarted ? (
                                     <React.Fragment>
                                       <p
                                         className="app__description">{app.description ? app.description : "404: Description Not Found"}</p>
@@ -120,6 +116,6 @@ class _Application extends Component {
 
 export const Application = connect((state) => ({
   me: selectHackersMe(state),
-  events: state.events.allEvents,
-  applications: state.applications.allApplications
+  eventsWithMyApplicationsFlagged: selectEventsWithMyApplicationsFlagged(state),
+  myApplications: selectApplications(state),
 }))(_Application);
