@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
-import { ApplicationFormField, ErrorCodes } from '../components';
+import {ApplicationFormField, DelayedLink, ErrorCodes} from '../components';
 import { getApplicationsAction, getEventsAction, getMeAction, createHackerApplicationAction, updateHackerApplicationQuestionAction } from "../redux/actions";
 import '../scss/pages/application.scss';
 import { selectApplicationForm, selectHackersMe, selectMyApplicationQuestionsHashMap, selectApplicationFormQuestionsHashMap } from '../selectors';
 import {Link} from "react-router-dom";
+import {BackButton} from "../components/Navigations";
 
 
 async function chain(arr, fn) {
@@ -122,12 +123,7 @@ class _ApplicationForm extends Component {
     return (
       <section className="app">
         <form onSubmit={this.handleSave}>
-          <Link
-            className="app__link-btn"
-            to={`/app`}
-          >
-            Back to Applications
-          </Link>
+          <BackButton to="/app" text="Back" />
           <h1>{application.event.name} - {application.name}</h1>
 
           <p className="app__description">{application.description}</p>
