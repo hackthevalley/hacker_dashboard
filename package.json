@@ -1,6 +1,6 @@
 {
   "name": "htv-dash",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "homepage": "https://hacker.hackthevalley.io",
   "dependencies": {

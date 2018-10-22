@@ -68,6 +68,11 @@ class _Profile extends Component {
   };
 
   render() {
+
+    if(!this.props.me) {
+      return <p><i className="fa fa-spinner fa-spin" aria-hidden="true" /></p>
+    }
+
     return (
       <form className="profile" onSubmit={this.handleUpdateMe}>
         <h1 className="profile__header">Profile</h1>
@@ -85,7 +90,7 @@ class _Profile extends Component {
           </div>
           <div className="profile__col">
             <div className="profile__form-item">
-              <label className="profile__label" htmlFor="first_name">First Name</label>
+              <label className="profile__label" htmlFor="first_name">First Name *</label>
               <input
                 id="first_name"
                 type="text"
@@ -98,7 +103,7 @@ class _Profile extends Component {
               />
             </div>
             <div className="profile__form-item">
-              <label className="profile__label" htmlFor="last_name">Last Name</label>
+              <label className="profile__label" htmlFor="last_name">Last Name *</label>
               <input
                 id="last_name"
                 type="text"
@@ -130,7 +135,7 @@ class _Profile extends Component {
 
             <div className="profile__form-item">
               <label className="profile__label" htmlFor="dob">
-                  Date of birth<br/>
+                  Date of birth *<br/>
                   <small>This is used to determine your eligibility for our events.</small>
               </label>
               <input
@@ -163,7 +168,7 @@ class _Profile extends Component {
           </div>
 
           <div className="profile__form-item profile__col">
-            <label className="profile__label" htmlFor="dob">University</label>
+            <label className="profile__label" htmlFor="dob">University / School</label>
             <input
               id="school"
               type="text"
@@ -236,7 +241,7 @@ class _Profile extends Component {
           </div>
         </div>
           <div className="profile__form-item">
-            <input type="submit" value="Save" className="profile__button" disabled={this.props.fetching}/>
+            <input type="submit" value="Save" className="profile__button" disabled={this.props.fetchCount > 0}/>
           </div>
 
         <ErrorCodes errorCodes={this.state.updateMeErrorCodes}/>
@@ -250,5 +255,6 @@ class _Profile extends Component {
 
 export const Profile = connect((state) => ({
   me: selectHackersMe(state),
-    fetching: state.fetch.fetching
+    fetching: state.fetch.fetching,
+  fetchCount: state.fetch.fetchCount
 }))(_Profile);
