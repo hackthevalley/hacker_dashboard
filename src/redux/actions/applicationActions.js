@@ -17,9 +17,15 @@ export function getApplicationsAction() {
                     _id
                     applications {
                         _id
+                        submitted_at
                         application {
                             _id
                             name
+                            description
+                            event {
+                                _id
+                                name
+                            }
                         }
                     }
                 }

@@ -1,9 +1,23 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from "react-redux";
-import { ApplicationFormField, ErrorCodes } from '../components';
-import { getApplicationsAction, getEventsAction, getMeAction, createHackerApplicationAction, updateHackerApplicationQuestionAction } from "../redux/actions";
+import React, {Component, Fragment} from 'react';
+import {connect} from "react-redux";
+import {ApplicationFormField, DelayedLink, ErrorCodes} from '../components';
+import {
+  getApplicationsAction,
+  getEventsAction,
+  getMeAction,
+  createHackerApplicationAction,
+  updateHackerApplicationQuestionAction, submitHackerApplicationAction
+} from "../redux/actions";
 import '../scss/pages/application.scss';
-import { selectApplicationForm, selectHackersMe, selectMyApplicationQuestionsHashMap, selectApplicationFormQuestionsHashMap } from '../selectors';
+import {
+  selectApplicationForm,
+  selectHackersMe,
+  selectMyApplicationQuestionsHashMap,
+  selectApplicationFormQuestionsHashMap
+} from '../selectors';
+import {Link} from "react-router-dom";
+import {BackButton} from "../components/Navigations";
+
 
 async function chain(arr, fn) {
   const result = []
@@ -27,10 +41,12 @@ class _ApplicationForm extends Component {
   state = {
     questionErrorCodes: {},
     questionSaved: {},
+    canSubmit: false,
+    changed: true
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch(getMeAction());
     dispatch(getEventsAction());
     dispatch(getApplicationsAction());
@@ -41,7 +57,7 @@ class _ApplicationForm extends Component {
       dispatch,
       me,
       application,
-      applicationQuestionsById,
+      applicationQuestionsById
     } = this.props;
     this.setState({
       questionErrorCodes: {},
@@ -79,15 +95,39 @@ class _ApplicationForm extends Component {
       [questionIds[i]]: action.error && action.error.errorCodes,
     }), {});
 
+    let canSubmit = true;
+    for (let i = 0; i < application.questions.length; i++) {
+      if (application.questions[i].required) {
+        if (!answers[application.questions[i]._id][0]) {
+          canSubmit = false;
+          break;
+        }
+      }
+    }
+
     this.setState({
       questionErrorCodes,
+      canSubmit,
+      changed: false,
       questionSaved: Object.keys(questionErrorCodes)
         .reduce((res, question_id) => ({
           ...res,
           [question_id]: !questionErrorCodes[question_id],
         }), {})
     });
-  }
+
+  };
+
+  handleSubmit = () => {
+    if(window.confirm("Are you sure you want to submit your application? Once an application is submitted, you cannot make changes anymore.")) {
+      this.props.dispatch(submitHackerApplicationAction(this.getHackerApplication()._id));
+    }
+  };
+
+  getHackerApplication = () => {
+    return this.props.me.applications.find(
+      hackerApp => hackerApp.application._id === this.props.application._id);
+  };
 
   render() {
     const {
@@ -103,24 +143,61 @@ class _ApplicationForm extends Component {
       return null;
     }
     return (
-      <form onSubmit={this.handleSave}>
-        <h1>{application.name}</h1>
+      <section className="app">
+        <form onSubmit={this.handleSave}>
+          <section className="app__form">
+            <BackButton to="/app" text="Back"/>
+            <h1>{application.event.name} - {application.name}</h1>
 
-        <p>{application.description}</p>
+            <p className="app__description">{application.description}</p>
 
-        {application.questions.map((question) => (
-          <Fragment key={question._id}>
-            <ApplicationFormField
-              {...question}
-              answers={myApplicationAnswersByQuestionId[question._id]}
-            />
-            {questionSaved[question._id] && (<p style={{color: '#4c4' }}>Saved</p>)}
-            <ErrorCodes errorCodes={questionErrorCodes[question._id]} />
-          </Fragment>
-        ))}
+            {application.questions.map((question) => (
+              <Fragment key={question._id}>
+                <ApplicationFormField
+                  {...question}
+                  answers={myApplicationAnswersByQuestionId[question._id]}
+                  onChange={() => this.setState({changed: true, canSubmit: false})}
+                />
+              </Fragment>
+            ))}
+          </section>
+          <aside className="app__action-panel">
+            {this.getHackerApplication() && this.getHackerApplication().submitted_at ? (
+              <small className="app__small-label">
+                Application has been submitted.
+              </small>
+            ): (
+              <Fragment>
+                <small className="app__small-label">
+                  You can keep updating your application until you decide to submit.
+                </small>
+                <br/>
+                {!this.props.fetchCount ? (
+                  <Fragment>
+                    <button type="submit"
+                            className={"app__apply-btn " + (!this.state.changed ? "app__apply-btn--disabled" : "'")}
+                            disabled={!this.state.changed}>Save
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="button"
+                            onClick={this.handleSubmit}
+                            className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")}
+                            disabled={!this.state.canSubmit}>
+                      Submit
+                    </button>
+                  </Fragment>
+                ): (
+                  <Fragment>
+                    <br/>
+                    <i className="fa fa-spinner fa-spin" aria-hidden="true" />
+                  </Fragment>
+                )}
+              </Fragment>
+            )}
 
-        <button type="submit">Save</button>
-      </form>
+          </aside>
+        </form>
+      </section>
     )
   }
 }
@@ -130,4 +207,5 @@ export const ApplicationForm = connect((state, props) => ({
   myApplicationAnswersByQuestionId: selectMyApplicationQuestionsHashMap(state, props),
   application: selectApplicationForm(state, props),
   applicationQuestionsById: selectApplicationFormQuestionsHashMap(state, props),
+  fetchCount: state.fetch.fetchCount
 }))(_ApplicationForm);

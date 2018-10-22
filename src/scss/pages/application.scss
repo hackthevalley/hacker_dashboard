@@ -3,6 +3,7 @@
 @import '../variables';
 
 .app {
+  position: relative;
   &__content {
     @include flex(space-between, flex-start);
     padding-top: 16px;
@@ -11,6 +12,20 @@
   &__col {
     width: calc(50% - 20px);
     box-sizing: border-box;
+  }
+
+  &__form {
+    width: calc(100% - 400px);
+  }
+
+  &__action-panel {
+    width: 350px;
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    border: rgba(0,0,0,0.1) 2px solid;
+    padding: 20px 20px 40px 20px;
+    background-color: white;
   }
 
   &__items {
@@ -56,6 +71,8 @@
 
   &__description {
     font-size: 0.95rem;
+    padding-top: 10px;
+    opacity: 0.7;
   }
 
   &__apply-btn {
@@ -68,7 +85,24 @@
     margin-top: 10px;
     font-weight: bold;
     padding: 12px 30px;
+    font-size: 14px;
     text-decoration: none;
+    transition: all ease 0.3s;
+    outline: none;
+    &:hover {
+      background-color: darken($highlight, 5%);
+      transition: all ease 0.3s;
+    }
+    &--disabled {
+      opacity: 0.5;
+      transition: all ease 0.3s;
+    }
+  }
+
+  &__small-label {
+    opacity: 0.7;
+    padding-top: 10px;
+    display: inline-block;
   }
 }
 
@@ -82,6 +116,19 @@
       width: 80%;
       margin-bottom: 30px;
     }
+    &__form {
+      width: 100%;
+      padding-bottom: 200px;
+    }
+    &__action-panel {
+      top: auto;
+      left: $sidenav-expanded;
+      right: 0;
+      width: calc(100% - #{$sidenav-expanded} - 40px);
+      border: none;
+      box-shadow: rgba(0,0,0,0.1) 0 0 20px;
+      bottom: 20px;
+    }
   }
 }
 
@@ -89,6 +136,11 @@
   .app {
     &__col {
       width: 100%;
+    }
+    &__action-panel {
+      left: $sidenav-collapsed + 20px;
+      bottom: 0;
+      width: calc(100% - #{$sidenav-collapsed} - 40px);
     }
   }
 }

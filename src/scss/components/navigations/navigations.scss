@@ -1,0 +1,31 @@
+/*!
+ * Copyright (c) Hack the Valley All Rights Reserved.
+ * License granted under MIT.
+ * Author(s):
+ *  Jun Zheng - me at jackzh dot com
+ *  Fredric Pun
+ *  Omar Chehab
+ */
+
+.navigation {
+  &__back-btn {
+    background-color: rgba(219,219,219,0.2);
+    padding: 10px 20px 10px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 10px;
+    transition: all ease 0.3s;
+    &:link,
+    &:active,
+    &:visited {
+      color: rgba(0,0,0,0.7);
+      font-weight: bold;
+      text-decoration: none;
+    }
+    &:hover {
+      background-color: rgba(219,219,219,0.5);
+      padding-left: 20px;
+      transition: all ease 0.3s;
+    }
+  }
+}

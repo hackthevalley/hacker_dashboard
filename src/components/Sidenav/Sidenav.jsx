@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { moveHighlight, logoutAction } from '../../redux/actions';
+import { pageTransition, moveHighlight, logoutAction } from '../../redux/actions';
 import { SidenavItem } from './';
 import '../../scss/components/sidenav/sidenav.scss';
 
@@ -10,12 +10,6 @@ const MAIN_ITEMS = [
   { path: "/profile", text: "Profile" },
   { path: "/app", text: "Applications" }
 ];
-
-const BOTTOM_ITEMS = [
-  // { path: "/faq", text: "FAQ" },
-  // { path: "/contact", text: "Contact" },
-  { path: "/", text: "Logout", noPush: true }
-]
 
 class _Sidenav extends Component {
 
@@ -82,7 +76,7 @@ class _Sidenav extends Component {
   }
 
   render() {
-    const { index } = this.props;
+    const { index, logoutAction } = this.props;
     const { expanded } = this.state;
     const transform = `translate3d(0,calc(${index*100}% + ${index*10}px),0)`;
 
@@ -95,19 +89,17 @@ class _Sidenav extends Component {
       <ul className="sidenav__items sidenav__items--main">
         <div className={`sidenav__highlight${index === -1? "--hide": ""}`} style={{transform}}/>
         {
-          MAIN_ITEMS.map((item, key) => {
+          MAIN_ITEMS.map(({ path, text }, key) => {
             const active = index === key;
-            const click = active? null: this.click.bind(this, key, item.path);
-            return <SidenavItem active={active} key={key} click={click} { ...item }/>
+            const click = active? null: this.click.bind(this, key);
+            return <SidenavItem path={path} active={active} key={key} onStart={click}>
+              { text }
+            </SidenavItem>
           })
         }
       </ul>
       <ul className="sidenav__items sidenav__items--bottom">
-        {
-          BOTTOM_ITEMS.map((item, key) => {
-            return <SidenavItem click={this.click.bind(this, -1, item.path)} key={key} {...item}/>
-          })
-        }
+        <SidenavItem onStart={this.click.bind(this, -1)} onEnd={logoutAction} path="/">Logout</SidenavItem>
       </ul>
       <button type="button" onClick={() => this.setState({expanded: !expanded})} className="sidenav__menu">
         <div className="sidenav__bar sidenav__bar--first"/>
@@ -117,17 +109,13 @@ class _Sidenav extends Component {
     </nav>
   }
 
-  click(key, path) {
-    const { index, moveHighlight, logoutAction } = this.props;
-    if (key !== index) {
-      moveHighlight(key);
-    }
+  click(key) {
+    const { moveHighlight, pageTransition } = this.props;
     if (this.state.expanded) {
       this.setState({ expanded: false });
     }
-    if (path === "/") {
-      window.setTimeout(() => logoutAction(), 600);
-    }
+    moveHighlight(key);
+    pageTransition();
   }
 }
 
@@ -136,6 +124,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  pageTransition,
   moveHighlight,
   logoutAction
 }, dispatch)

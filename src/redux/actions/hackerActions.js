@@ -12,6 +12,8 @@ export const CREATEHACKERAPPLICATION_FAIL = 'CREATEHACKERAPPLICATION_FAIL';
 export const CREATEHACKERAPPLICATION_SUCCESS = 'CREATEHACKERAPPLICATION_SUCCESS';
 export const UPDATEHACKERAPPLICATIONQUESTION_FAIL = 'UPDATEHACKERAPPLICATIONQUESTION_FAIL';
 export const UPDATEHACKERAPPLICATIONQUESTION_SUCCESS = 'UPDATEHACKERAPPLICATIONQUESTION_SUCCESS';
+export const SUBMITHACKERAPPLICATION_FAIL = 'SUBMITHACKERAPPLICATION_FAIL';
+export const SUBMITHACKERAPPLICATION_SUCCESS = 'SUBMITHACKERAPPLICATION_SUCCESS';
 
 export function getMeAction() {
   return async (dispatch) => {
@@ -157,6 +159,34 @@ export function updateHackerApplicationQuestionAction(hacker_application_id, que
       const error = new HttpRequestError(errorCodes);
       return Promise.all([
         dispatch({ type: UPDATEHACKERAPPLICATIONQUESTION_FAIL, error }),
+        dispatch({ type: FETCH_FAIL, error }),
+      ]);
+    }
+  }
+}
+
+export function submitHackerApplicationAction(hacker_application_id) {
+  return async (dispatch) => {
+    try {
+      const promise = htv.HackerApplication.submit(hacker_application_id);
+      dispatch({ type: FETCH_LOADING, promise });
+      await promise;
+      console.log("YES");
+      return Promise.all([
+        dispatch({
+          type: SUBMITHACKERAPPLICATION_SUCCESS
+        }),
+        dispatch({ type: FETCH_SUCCESS }),
+        dispatch(getMeAction())
+      ]);
+    } catch (err) {
+      console.log(err, hacker_application_id);
+      const errorCodes = err.graphQLErrors
+        ? err.graphQLErrors.map(err => err.message)
+        : err.errorCodes;
+      const error = new HttpRequestError(errorCodes);
+      return Promise.all([
+        dispatch({ type: SUBMITHACKERAPPLICATION_FAIL, error }),
         dispatch({ type: FETCH_FAIL, error }),
       ]);
     }

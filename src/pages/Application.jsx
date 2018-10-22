@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
 import {getEventsAction, getApplicationsAction} from "../redux/actions";
 import '../scss/pages/application.scss';
-import {selectHackersMe} from "../selectors";
+import {selectHackersMe, selectApplications, selectEventsWithMyApplicationsFlagged} from "../selectors";
 
 class _Application extends Component {
 
@@ -13,53 +13,110 @@ class _Application extends Component {
     dispatch(getApplicationsAction());
   }
 
+
   render() {
-    const { applications, events } = this.props;
+    const {
+      myApplications,
+      eventsWithMyApplicationsFlagged,
+    } = this.props;
+    if (!myApplications || !eventsWithMyApplicationsFlagged) {
+      return null;
+    }
     return (
       <section className="app">
         <h1>Applications</h1>
         <br/>
-          <div className="app__content">
+        <div className="app__content">
           <div className="app__col">
             <h2>My Applications</h2>
             <ul className="app__items">
-            {
-              applications.length > 0?
-              applications.map((app, key) =>
-                // TODO: style when we have something
-                <li className="app__item">REEEEEEEEEEEE</li>
-              ):
-              <li className="app__item app__item--empty">
-                <span className="app__shrug">¯\_(ツ)_/¯</span>
-                <h3 className="app__shrug-header">No applications found</h3>
-                <span>Fortune favors the bold, apply now!</span>
-              </li>
-            }
+              {
+                myApplications.length > 0 ?
+                  myApplications.map((app, key) => {
+                    console.log(app);
+                    return (
+                      <li className="app__item" key={key}>
+                        <h3>{app.application.event.name} - {app.application.name}</h3>
+                        <p
+                          className="app__description">{app.application.description ? app.application.description : "404: Description Not Found"}</p>
+                        {app.submitted_at ? (
+                          <Fragment>
+                            <small className="app__small-label">
+                              Application submitted, you will receive an email once a decision has been made.
+                            </small>
+                          </Fragment>
+                        ) : (
+                          <Fragment>
+                            <small className="app__small-label">
+                              You haven't submitted your application yet, please ensure you submit your application
+                              before the deadline.
+                            </small>
+                            <Link
+                              className="app__apply-btn"
+                              to={`/app/${app.application._id}`}
+                            >
+                              Continue Application
+                            </Link>
+                          </Fragment>
+                        )}
+
+                      </li>
+                    )
+                  }) :
+                  <li className="app__item app__item--empty">
+                    <span className="app__shrug">¯\_(ツ)_/¯</span>
+                    <h3 className="app__shrug-header">No applications found</h3>
+                    <span>Fortune favors the bold, apply now!</span>
+
+                  </li>
+              }
             </ul>
           </div>
           <div className="app__col">
             <h2>Open Applications</h2>
             <div className="app__event">
               {
-                events.map(({_id, name, applications}) =>
+                eventsWithMyApplicationsFlagged.map(({_id, name, applications}) =>
                   <div key={ _id } className="app__event">
                     <h3>{ name }</h3>
                     <ul className="app__items">
                       {
-                        applications.map(app =>
-                          <li key={app._id} className="app__item">
-                            <h4>{ app.name }</h4>
+                        applications.map(app => {console.log(app)
+                          return (
+                            <li key={app._id} className="app__item">
+                              <h4>{app.name}</h4>
+                              {app.open ? (
+                                <React.Fragment>
+                                {!app.isStarted ? (
+                                    <React.Fragment>
+                                      <p
+                                        className="app__description">{app.description ? app.description : "404: Description Not Found"}</p>
+                                      <Link
+                                        className="app__apply-btn"
+                                        to={`/app/${app._id}`}
+                                      >
+                                        Start Application
+                                      </Link>
+                                    </React.Fragment>
+                                  ) : (
+                                    <small className="app__small-label">
+                                      You already started this application, check My Applications section for more
+                                      details.
+                                    </small>
+                                  )}
+                                </React.Fragment>
+                              ) : (
+                                <Link
+                                  className="app__apply-btn app__apply-btn--disabled"
+                                  to={`/app`}
+                                >
+                                  Application Not Yet Open
+                                </Link>
+                              )}
 
-                            <p className="app__description">{app.description ? app.description: "404: Description Not Found" }</p>
-
-                            <Link
-                              className="app__apply-btn"
-                              to={`/app/${app._id}`}
-                            >
-                              Start Application
-                            </Link>
-                          </li>
-                        )
+                            </li>
+                          )
+                        })
                       }
                     </ul>
                   </div>
@@ -75,6 +132,6 @@ class _Application extends Component {
 
 export const Application = connect((state) => ({
   me: selectHackersMe(state),
-  events: state.events.allEvents,
-  applications: state.applications.allApplications
+  eventsWithMyApplicationsFlagged: selectEventsWithMyApplicationsFlagged(state),
+  myApplications: selectApplications(state),
 }))(_Application);

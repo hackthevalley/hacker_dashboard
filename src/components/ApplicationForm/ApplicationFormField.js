@@ -4,13 +4,15 @@ import {ApplicationFormTextAreaField} from './ApplicationFormTextAreaField';
 import {ApplicationFormRadioField} from './ApplicationFormRadioField';
 import {ApplicationFormCheckboxField} from './ApplicationFormCheckboxField';
 import {ApplicationFormSelectField} from './ApplicationFormSelectField';
+import '../../scss/components/applicationform/applicationform.scss';
+
 
 const questionTypeToComponent = {
   email: ApplicationFormTextField,
   date: ApplicationFormTextField,
   short: ApplicationFormTextField,
   long: ApplicationFormTextAreaField,
-  radio: ApplicationFormRadioField,
+  radio: ApplicationFormSelectField,
   checkbox: ApplicationFormCheckboxField,
   choice: ApplicationFormSelectField,
 };
@@ -73,12 +75,10 @@ export function ApplicationFormField(props) {
   const FieldComponent = questionTypeToComponent[props.question_type];
   const fieldProps = questionTypeToComponentProps[props.question_type](props);
   return (
-    <label style={{ display: 'block' }}>
+    <div className="applicationform__container">
       <strong>{props.name}{props.required && '*'}</strong>
-
-      <p>{props.description}</p>
-
-      <FieldComponent {...fieldProps} />
-    </label>
+      {props.description ? <small>{props.description}</small> : null}
+      <FieldComponent {...fieldProps} onChange={props.onChange} />
+    </div>
   );
 }
