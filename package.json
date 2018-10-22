@@ -2,7 +2,7 @@
   "name": "htv-dash",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hackthevalley.github.io/hack_the_valley_dashboard/",
+  "homepage": "https://hacker.hackthevalley.io",
   "dependencies": {
     "connected-react-router": "^4.4.1",
     "history": "^4.7.2",

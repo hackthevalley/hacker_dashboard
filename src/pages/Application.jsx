@@ -50,7 +50,7 @@ class _Application extends Component {
                             <small className="app__small-label">
                               You haven't submitted your application yet, please ensure you submit your application
                               before the deadline.
-                            </small>
+                            </small><br/>
                             <Link
                               className="app__apply-btn"
                               to={`/app/${app.application._id}`}
