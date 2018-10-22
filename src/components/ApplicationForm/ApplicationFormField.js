@@ -12,7 +12,7 @@ const questionTypeToComponent = {
   date: ApplicationFormTextField,
   short: ApplicationFormTextField,
   long: ApplicationFormTextAreaField,
-  radio: ApplicationFormRadioField,
+  radio: ApplicationFormSelectField,
   checkbox: ApplicationFormCheckboxField,
   choice: ApplicationFormSelectField,
 };

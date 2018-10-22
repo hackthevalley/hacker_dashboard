@@ -6,7 +6,7 @@ import {
   getEventsAction,
   getMeAction,
   createHackerApplicationAction,
-  updateHackerApplicationQuestionAction
+  updateHackerApplicationQuestionAction, submitHackerApplicationAction
 } from "../redux/actions";
 import '../scss/pages/application.scss';
 import {
@@ -95,7 +95,6 @@ class _ApplicationForm extends Component {
       [questionIds[i]]: action.error && action.error.errorCodes,
     }), {});
 
-
     let canSubmit = true;
     for (let i = 0; i < application.questions.length; i++) {
       if (application.questions[i].required) {
@@ -116,6 +115,18 @@ class _ApplicationForm extends Component {
           [question_id]: !questionErrorCodes[question_id],
         }), {})
     });
+
+  };
+
+  handleSubmit = () => {
+    if(window.confirm("Are you sure you want to submit your application? Once an application is submitted, you cannot make changes anymore.")) {
+      this.props.dispatch(submitHackerApplicationAction(this.getHackerApplication()._id));
+    }
+  };
+
+  getHackerApplication = () => {
+    return this.props.me.applications.find(
+      hackerApp => hackerApp.application._id === this.props.application._id);
   };
 
   render() {
@@ -151,19 +162,39 @@ class _ApplicationForm extends Component {
             ))}
           </section>
           <aside className="app__action-panel">
-            <small className="app__small-label">
-              You can keep updating your application until you decide to submit.
-            </small>
-            <br/>
-            <button type="submit"
-                    className={"app__apply-btn " + (!this.state.changed ? "app__apply-btn--disabled" : "'")}
-                    disabled={!this.state.changed}>Save
-            </button>
-            &nbsp;&nbsp;
-            <button type="button"
-                    className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")}
-                    disabled={!this.state.canSubmit}>Submit
-            </button>
+            {this.getHackerApplication() && this.getHackerApplication().submitted_at ? (
+              <small className="app__small-label">
+                Application has been submitted.
+              </small>
+            ): (
+              <Fragment>
+                <small className="app__small-label">
+                  You can keep updating your application until you decide to submit.
+                </small>
+                <br/>
+                {!this.props.fetchCount ? (
+                  <Fragment>
+                    <button type="submit"
+                            className={"app__apply-btn " + (!this.state.changed ? "app__apply-btn--disabled" : "'")}
+                            disabled={!this.state.changed}>Save
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="button"
+                            onClick={this.handleSubmit}
+                            className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")}
+                            disabled={!this.state.canSubmit}>
+                      Submit
+                    </button>
+                  </Fragment>
+                ): (
+                  <Fragment>
+                    <br/>
+                    <i className="fa fa-spinner fa-spin" aria-hidden="true" />
+                  </Fragment>
+                )}
+              </Fragment>
+            )}
+
           </aside>
         </form>
       </section>
@@ -176,4 +207,5 @@ export const ApplicationForm = connect((state, props) => ({
   myApplicationAnswersByQuestionId: selectMyApplicationQuestionsHashMap(state, props),
   application: selectApplicationForm(state, props),
   applicationQuestionsById: selectApplicationFormQuestionsHashMap(state, props),
+  fetchCount: state.fetch.fetchCount
 }))(_ApplicationForm);
