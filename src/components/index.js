@@ -3,3 +3,4 @@ export * from './Sidenav';
 export * from './ApplicationForm';
 export * from './DelayedLink';
 export * from './ErrorCodes';
+export * from './Toast';

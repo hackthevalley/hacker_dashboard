@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
-import {getEventsAction, getApplicationsAction, getMeAction} from "../redux/actions";
+import {getEventsAction, getApplicationsAction, getMeAction, addToastAction } from "../redux/actions";
 import '../scss/pages/application.scss';
 import {selectHackersMe, selectApplications, selectEventsWithMyApplicationsFlagged} from "../selectors";
 import {Announcement} from "../components/Announcements";
@@ -15,6 +15,13 @@ class _Application extends Component {
     dispatch(getApplicationsAction());
   }
 
+  testToast = () => {
+    this.props.dispatch(addToastAction({
+      title: "Error",
+      body: <p>Watch it sexy ass ;)</p>,
+      status: "REEE"
+    }));
+  }
 
   render() {
     const {
@@ -38,11 +45,12 @@ class _Application extends Component {
       );
     }
 
-
     return (
       <section className="app">
         <h1>Applications</h1>
-        <br/>
+
+        <button type="button" onClick={this.testToast}>TEST</button>
+
         <div className="app__content">
           <div className="app__col">
             <h2>My Applications</h2>

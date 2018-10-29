@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component, Fragment } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import localforage from 'localforage';
@@ -7,6 +7,7 @@ import { Dashboard } from '.';
 import '../scss/containers/app.scss';
 import { setSessionAction } from '../redux/actions';
 import { selectSession } from '../selectors';
+import { Toast } from '../components';
 
 const ROUTES = [
   { path: "/home", component: Pages.Home },
@@ -42,14 +43,17 @@ class _App extends Component {
       return null;
     }
     return (
-      <Switch>
-        <Route exact path="/" component={Pages.Login}/>
-        <Dashboard>
-          <Switch>
-            { ROUTES.map((props, key) => <Route exact key={key} { ...props }/>) }
-          </Switch>
-        </Dashboard>
-      </Switch>
+      <Fragment>
+        <Switch>
+          <Route exact path="/" component={Pages.Login}/>
+          <Dashboard>
+            <Switch>
+              { ROUTES.map((props, key) => <Route exact key={key} { ...props }/>) }
+            </Switch>
+          </Dashboard>
+        </Switch>
+        <Toast/>
+      </Fragment>
     );
   }
 }

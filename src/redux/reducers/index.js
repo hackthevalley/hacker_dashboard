@@ -4,4 +4,5 @@ export * from './sessionReducers';
 export * from './hackersReducers';
 export * from './eventReducers';
 export * from './applicationReducers';
-export * from  './fetchReducers';
+export * from './fetchReducers';
+export * from './toastReducers'

@@ -1,0 +1,54 @@
+@import '../../colors';
+@import '../../mixins';
+
+.toast {
+  list-style-type: none;
+  width: 100%;
+  max-width: 300px;
+  @include flex(flex-end, flex-end, column-reverse);
+  @include position(fixed, 0 15px 15px 0, auto, 0, 0, auto);
+  &__item {
+    background-color: white;
+    padding: 15px;
+    margin-top: 15px;
+    width: 100%;
+    cursor: pointer;
+    @include depth(1);
+    &:active {
+      background-color: #f3f3f3;
+    }
+  }
+
+  &__title {
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+  }
+
+  &__body {
+    font-size: 0.85rem;
+  }
+}
+
+// Animations
+.toast {
+  &:not(&--nt) & {
+    &__item {
+      transition:
+        opacity $normal-speed $normal-ease,
+        background-color $normal-speed $normal-ease,
+        transform $normal-speed $normal-ease
+      ;
+      &--remove {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+      }
+    }
+  }
+  &--add &__item:last-child {
+    animation: toast__item $normal-speed $normal-ease backwards;
+    @keyframes toast__item {
+      from { opacity: 0; transform: translate3d(100%, 0, 0) }
+      to { opacity: 1; transform: translate3d(0, 0, 0) }
+    }
+  }
+}
