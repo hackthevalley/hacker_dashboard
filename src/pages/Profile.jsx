@@ -125,7 +125,6 @@ class _Profile extends Component {
                 name="phone_number"
                 value={this.state.me.phone_number}
                 onChange={this.handleTextChange}
-                autoComplete="family-name"
                 placeholder="123-456-7890"
               />
             </div>
