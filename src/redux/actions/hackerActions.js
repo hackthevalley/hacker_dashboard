@@ -29,6 +29,7 @@ export function getMeAction() {
           school,
           github,
           linkedin,
+          phone_number,
           website,
           description,
           avatar,

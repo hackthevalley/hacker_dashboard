@@ -50,6 +50,7 @@ class _Profile extends Component {
       github: formData.get('github') || null,
       linkedin: formData.get('linkedin') || null,
       website: formData.get('website') || null,
+      phone_number: formData.get('phone_number') || null,
       description: formData.get('description') || null,
     }));
     if (action.error) {
@@ -113,6 +114,19 @@ class _Profile extends Component {
                 onChange={this.handleTextChange}
                 autoComplete="family-name"
                 placeholder="doe"
+              />
+            </div>
+            <div className="profile__form-item">
+              <label className="profile__label" htmlFor="last_name">Phone Number *</label>
+              <input
+                id="phone_number"
+                type="text"
+                className="profile__input"
+                name="phone_number"
+                value={this.state.me.phone_number}
+                onChange={this.handleTextChange}
+                autoComplete="family-name"
+                placeholder="123-456-7890"
               />
             </div>
 
