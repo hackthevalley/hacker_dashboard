@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://hacker.hackthevalley.io",
   "dependencies": {
+    "@sentry/browser": "^4.3.2",
     "connected-react-router": "^4.4.1",
     "history": "^4.7.2",
     "htv-sdk": "^1.1.2",
@@ -19,8 +20,8 @@
     "reselect": "^3.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "REACT_APP_VERSION=`git rev-parse --short HEAD` react-scripts start",
+    "build": "REACT_APP_VERSION=`git rev-parse --short HEAD` react-scripts build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test --env=jsdom",
