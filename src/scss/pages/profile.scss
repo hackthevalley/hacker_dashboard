@@ -67,6 +67,10 @@
     outline: none;
     box-sizing: border-box;
 
+    &:invalid {
+      border: #FFCDD2 2px solid;
+    }
+
     &--textarea {
       resize: vertical;
       width: 100%;
