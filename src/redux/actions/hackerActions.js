@@ -181,7 +181,12 @@ export function submitHackerApplicationAction(hacker_application_id) {
       const promise = htv.HackerApplication.submit(hacker_application_id);
       dispatch({type: FETCH_LOADING, promise});
       await promise;
-      console.log("YES");
+      new Noty({
+        theme: 'metroui',
+        timeout: 2000,
+        type: 'success',
+        text: 'Application submitted!',
+      }).show();
       return Promise.all([
         dispatch({
           type: SUBMITHACKERAPPLICATION_SUCCESS

@@ -16,6 +16,7 @@ import {
   selectApplicationFormQuestionsHashMap
 } from '../selectors';
 import {BackButton} from "../components/Navigations";
+import Noty from "noty";
 
 async function chain(arr, fn) {
   const result = []
@@ -88,6 +89,14 @@ class _ApplicationForm extends Component {
         transformAnswer(applicationQuestionsById[questionId], answers[questionId])
       ))
     );
+
+    new Noty({
+      theme: 'metroui',
+      timeout: 2000,
+      type: 'success',
+      text: 'Application saved.',
+    }).show();
+
     const questionErrorCodes = updateQuestionActions.reduce((res, [action], i) => ({
       ...res,
       [questionIds[i]]: action.error && action.error.errorCodes,
