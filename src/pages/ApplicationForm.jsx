@@ -162,33 +162,46 @@ class _ApplicationForm extends Component {
               </small>
             ) : (
               <Fragment>
-                <small className="app__small-label">
-                  You can keep updating your application until you decide to submit.
-                </small>
-                <br/>
                 {!this.props.fetchCount ? (
                   <Fragment>
-                    <button type="submit"
-                            className={"app__apply-btn " + (!this.state.changed ? "app__apply-btn--disabled" : "'")}
-                            disabled={!this.state.changed}>Save
-                    </button>
-                    &nbsp;&nbsp;
-                    <button type="button"
-                            onClick={this.handleSubmit}
-                            className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")}
-                            disabled={!this.state.canSubmit}>
-                      Submit
-                    </button>
+                    {this.state.changed ? (
+                      <Fragment>
+                        <small className="app__small-label">
+                          You can keep updating your application until you decide to submit.
+                        </small>
+                        <button type="submit"
+                                className={"app__apply-btn " + (!this.state.changed ? "app__apply-btn--disabled" : "'")}
+                                disabled={!this.state.changed}>
+                          <i className="fa fa-floppy-o" aria-hidden="true"/> Save
+                        </button>
+                      </Fragment>
+                    ): (
+                      <Fragment>
+                        {this.state.canSubmit ? (
+                          <Fragment>
+                            <small className="app__small-label">
+                              Once you submit your application, you won't be able to change it anymore.
+                            </small>
+                            <button type="button"
+                                    onClick={this.handleSubmit}
+                                    className={"app__apply-btn " + (!this.state.canSubmit ? "app__apply-btn--disabled" : "'")}>
+                              <i className="fa fa-paper-plane-o" aria-hidden="true"/> Submit
+                            </button>
+                          </Fragment>
+                        ): (
+                          <small className="app__small-label">Application saved, however you haven't completed all required fields. Once you complete the application, you may submit.</small>
+                        )}
+                      </Fragment>
+                    )}
                   </Fragment>
                 ) : (
                   <Fragment>
                     <br/>
-                    <i className="fa fa-spinner fa-spin" aria-hidden="true"/>
+                    <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true"/>
                   </Fragment>
                 )}
               </Fragment>
             )}
-
           </aside>
         </form>
       </section>

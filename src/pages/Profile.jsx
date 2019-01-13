@@ -6,6 +6,8 @@ import {selectHackersMe} from '../selectors';
 import SchoolNameServiceProvider from "../providers/SchoolNameServiceProvider";
 import {Hacker} from "../models";
 import {ErrorCodes} from "../components/ErrorCodes";
+import {Announcement} from "../components/Announcements";
+import {DelayedLink} from "../components";
 
 class _Profile extends Component {
 
@@ -24,10 +26,10 @@ class _Profile extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { me } = this.props;
+    const {me} = this.props;
     // Update this.state.me if a new prop is received
     if (me !== prevProps.me) {
-      this.setState({ me });
+      this.setState({me});
       window.drift.identify(me._id, {
         email: me.email_address
       });
@@ -71,16 +73,18 @@ class _Profile extends Component {
 
   render() {
 
-    if(!this.props.me) {
-      return <p><i className="fa fa-spinner fa-spin" aria-hidden="true" /></p>
+    const {me} = this.props;
+
+    if (!this.props.me) {
+      return <p><i className="fa fa-spinner fa-spin" aria-hidden="true"/></p>
     }
 
     return (
       <form className="profile" onSubmit={this.handleUpdateMe}>
         <h1 className="profile__header">Profile</h1>
         <h2>Personal Information</h2>
-          <small>Fill out your information so we can know a bit about you!</small>
-          <br/>
+        <small>Fill out your information so we can know a bit about you!</small>
+        <br/>
         <div className="profile__content">
           <div className="profile__col">
             <div className="profile__form-item profile__form-item--avatar">
@@ -89,7 +93,7 @@ class _Profile extends Component {
                 <small>fetched from Gravatar</small>
               </label>
               <div className="profile__avatar-wrapper">
-                <img id="avatar" className="profile__avatar" alt="Your uploaded profile" src={this.state.me.avatar} />
+                <img id="avatar" className="profile__avatar" alt="Your uploaded profile" src={this.state.me.avatar}/>
               </div>
             </div>
           </div>
@@ -155,8 +159,8 @@ class _Profile extends Component {
 
             <div className={'profile__form-item'}>
               <label className="profile__label" htmlFor="dob">
-                  Date of birth *<br/>
-                  <small>This is used to determine your eligibility for our events.</small>
+                Date of birth *<br/>
+                <small>This is used to determine your eligibility for our events.</small>
               </label>
               <input
                 id="dob"
@@ -247,8 +251,8 @@ class _Profile extends Component {
         <div className="profile__content">
           <div className="profile__form-item profile__col profile__col--full">
             <label className="profile__label" htmlFor="description">
-                Bio<br/>
-                <small>Tell us more about you! For example what sport do you play.</small>
+              Bio<br/>
+              <small>Tell us more about you! For example what sport do you play.</small>
             </label>
 
             <textarea
@@ -262,11 +266,16 @@ class _Profile extends Component {
             />
           </div>
         </div>
-          <div className="profile__form-item">
-            <button type="submit" className="profile__button" disabled={this.props.fetchCount > 0}>
-              {this.props.fetchCount === 0 ? "Save" : <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true"/>}
-            </button>
-          </div>
+        {(me.first_name && me.last_name && me.dob && me.school && me.phone_number) ?
+          <Announcement>
+            Your profile is complete! you can now start to apply for Hack The Valley 3.<br/>
+            <small>Visit [Applications] page to get started. Application will be closed on January 31st, act fast!</small>
+          </Announcement> : null}
+        <div className="profile__form-item">
+          <button type="submit" className="profile__button" disabled={this.props.fetchCount > 0}>
+            {this.props.fetchCount === 0 ? "Save" : <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true"/>}
+          </button>
+        </div>
 
         <ErrorCodes errorCodes={this.state.updateMeErrorCodes}/>
         <datalist id="data-schools">
