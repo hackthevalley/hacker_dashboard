@@ -28,7 +28,7 @@ export class Hacker extends Model {
   }
 
   initGravatarUrl() {
-    this.set('avatar', 'https://www.gravatar.com/avatar/' + md5(this.email_address.trim().toLowerCase()));
+    this.set('avatar', 'https://www.gravatar.com/avatar/' + md5(this.email_address.trim().toLowerCase()) + "?s=200");
   }
 
   shallowCopy() {

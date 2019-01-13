@@ -84,7 +84,10 @@ class _Profile extends Component {
         <div className="profile__content">
           <div className="profile__col">
             <div className="profile__form-item profile__form-item--avatar">
-              <label className="profile__label" htmlFor="avatar">Profile Image</label>
+              <label className="profile__label" htmlFor="avatar">
+                Profile Image<br/>
+                <small>fetched from Gravatar</small>
+              </label>
               <div className="profile__avatar-wrapper">
                 <img id="avatar" className="profile__avatar" alt="Your uploaded profile" src={this.state.me.avatar} />
               </div>
@@ -260,7 +263,9 @@ class _Profile extends Component {
           </div>
         </div>
           <div className="profile__form-item">
-            <input type="submit" value="Save" className="profile__button" disabled={this.props.fetchCount > 0}/>
+            <button type="submit" className="profile__button" disabled={this.props.fetchCount > 0}>
+              {this.props.fetchCount === 0 ? "Save" : <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true"/>}
+            </button>
           </div>
 
         <ErrorCodes errorCodes={this.state.updateMeErrorCodes}/>

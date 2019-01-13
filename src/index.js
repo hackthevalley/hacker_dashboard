@@ -2,6 +2,8 @@ import React        from 'react';
 import ReactDOM     from 'react-dom';
 import {unregister} from './registerServiceWorker';
 import * as Sentry  from '@sentry/browser';
+import 'noty/lib/noty.css';
+import 'noty/lib/themes/metroui.css';
 
 // Router Stuff
 import {applyMiddleware, compose, createStore, combineReducers} from 'redux';

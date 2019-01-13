@@ -1,8 +1,9 @@
 import htv from 'htv-sdk';
 import HttpRequestError from '../../errors/HttpRequestError';
-import { logoutAction } from './';
-import { Hacker } from '../../models';
-import { FETCH_LOADING, FETCH_SUCCESS, FETCH_FAIL } from '.';
+import {logoutAction} from './';
+import {Hacker} from '../../models';
+import {FETCH_LOADING, FETCH_SUCCESS, FETCH_FAIL} from '.';
+import Noty from 'noty';
 
 export const GETME_FAIL = 'GETME_FAIL';
 export const GETME_SUCCESS = 'GETME_SUCCESS';
@@ -53,7 +54,7 @@ export function getMeAction() {
           }
         }
       }`);
-      dispatch({ type: FETCH_LOADING, promise });
+      dispatch({type: FETCH_LOADING, promise});
       const hacker = await promise;
       if (!hacker.me) {
         await dispatch(logoutAction());
@@ -64,7 +65,7 @@ export function getMeAction() {
           type: GETME_SUCCESS,
           hacker: new Hacker({...hacker.me}),
         }),
-        dispatch({ type: FETCH_SUCCESS }),
+        dispatch({type: FETCH_SUCCESS}),
       ]);
     } catch (err) {
       const errorCodes = err.graphQLErrors
@@ -73,8 +74,8 @@ export function getMeAction() {
       const error = new HttpRequestError(errorCodes);
       console.log(err);
       return Promise.all([
-        dispatch({ type: GETME_FAIL, error }),
-        dispatch({ type: FETCH_FAIL, error }),
+        dispatch({type: GETME_FAIL, error}),
+        dispatch({type: FETCH_FAIL, error}),
       ]);
     }
   }
@@ -84,14 +85,21 @@ export function updateHackerAction(hacker_id, hacker) {
   return async (dispatch) => {
     try {
       const promise = htv.Hacker.update(hacker_id, hacker);
-      dispatch({ type: FETCH_LOADING, promise });
+      dispatch({type: FETCH_LOADING, promise});
       await promise;
+      new Noty({
+        theme: 'metroui',
+        timeout: 2000,
+        type: 'success',
+        text: 'Profile saved.',
+      }).show();
       return Promise.all([
         dispatch({
           type: UPDATEME_SUCCESS,
           hacker: new Hacker(hacker),
         }),
-        dispatch({ type: FETCH_SUCCESS }),
+        dispatch(getMeAction()),
+        dispatch({type: FETCH_SUCCESS}),
       ]);
     } catch (err) {
       const errorCodes = err.graphQLErrors
@@ -99,8 +107,8 @@ export function updateHackerAction(hacker_id, hacker) {
         : err.errorCodes;
       const error = new HttpRequestError(errorCodes);
       return Promise.all([
-        dispatch({ type: UPDATEME_FAIL, error }),
-        dispatch({ type: FETCH_FAIL, error }),
+        dispatch({type: UPDATEME_FAIL, error}),
+        dispatch({type: FETCH_FAIL, error}),
       ]);
     }
   }
@@ -110,7 +118,7 @@ export function createHackerApplicationAction(application_id) {
   return async (dispatch) => {
     try {
       const promise = htv.HackerApplication.create(application_id);
-      dispatch({ type: FETCH_LOADING, promise });
+      dispatch({type: FETCH_LOADING, promise});
       const hacker_application_id = await promise;
       return Promise.all([
         dispatch({
@@ -124,7 +132,7 @@ export function createHackerApplicationAction(application_id) {
             submitted_at: null,
           },
         }),
-        dispatch({ type: FETCH_SUCCESS }),
+        dispatch({type: FETCH_SUCCESS}),
       ]);
     } catch (err) {
       const errorCodes = err.graphQLErrors
@@ -132,8 +140,8 @@ export function createHackerApplicationAction(application_id) {
         : err.errorCodes;
       const error = new HttpRequestError(errorCodes);
       return Promise.all([
-        dispatch({ type: CREATEHACKERAPPLICATION_FAIL, error }),
-        dispatch({ type: FETCH_FAIL, error }),
+        dispatch({type: CREATEHACKERAPPLICATION_FAIL, error}),
+        dispatch({type: FETCH_FAIL, error}),
       ]);
     }
   }
@@ -143,7 +151,7 @@ export function updateHackerApplicationQuestionAction(hacker_application_id, que
   return async (dispatch) => {
     try {
       const promise = htv.HackerApplication.updateQuestion(hacker_application_id, question_id, answers);
-      dispatch({ type: FETCH_LOADING, promise });
+      dispatch({type: FETCH_LOADING, promise});
       await promise;
       return Promise.all([
         dispatch({
@@ -152,7 +160,7 @@ export function updateHackerApplicationQuestionAction(hacker_application_id, que
           question_id,
           answers,
         }),
-        dispatch({ type: FETCH_SUCCESS }),
+        dispatch({type: FETCH_SUCCESS}),
       ]);
     } catch (err) {
       const errorCodes = err.graphQLErrors
@@ -160,8 +168,8 @@ export function updateHackerApplicationQuestionAction(hacker_application_id, que
         : err.errorCodes;
       const error = new HttpRequestError(errorCodes);
       return Promise.all([
-        dispatch({ type: UPDATEHACKERAPPLICATIONQUESTION_FAIL, error }),
-        dispatch({ type: FETCH_FAIL, error }),
+        dispatch({type: UPDATEHACKERAPPLICATIONQUESTION_FAIL, error}),
+        dispatch({type: FETCH_FAIL, error}),
       ]);
     }
   }
@@ -171,14 +179,14 @@ export function submitHackerApplicationAction(hacker_application_id) {
   return async (dispatch) => {
     try {
       const promise = htv.HackerApplication.submit(hacker_application_id);
-      dispatch({ type: FETCH_LOADING, promise });
+      dispatch({type: FETCH_LOADING, promise});
       await promise;
       console.log("YES");
       return Promise.all([
         dispatch({
           type: SUBMITHACKERAPPLICATION_SUCCESS
         }),
-        dispatch({ type: FETCH_SUCCESS }),
+        dispatch({type: FETCH_SUCCESS}),
         dispatch(getMeAction())
       ]);
     } catch (err) {
@@ -188,8 +196,8 @@ export function submitHackerApplicationAction(hacker_application_id) {
         : err.errorCodes;
       const error = new HttpRequestError(errorCodes);
       return Promise.all([
-        dispatch({ type: SUBMITHACKERAPPLICATION_FAIL, error }),
-        dispatch({ type: FETCH_FAIL, error }),
+        dispatch({type: SUBMITHACKERAPPLICATION_FAIL, error}),
+        dispatch({type: FETCH_FAIL, error}),
       ]);
     }
   }

@@ -12,12 +12,6 @@ export const hackers = (state = DEFAULT_STATE, action) => {
         me: action.hacker,
       };
 
-    case UPDATEME_SUCCESS:
-      return {
-        ...state,
-        me: action.hacker,
-      };
-
     case CREATEHACKERAPPLICATION_SUCCESS:
       return {
         ...state,

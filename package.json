@@ -10,6 +10,7 @@
     "htv-sdk": "^1.1.11",
     "localforage": "^1.7.2",
     "md5": "^2.2.1",
+    "noty": "^3.2.0-beta",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
