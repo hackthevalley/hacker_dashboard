@@ -1,10 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import '../scss/pages/login.scss';
 import '../scss/components/buttons/buttons.scss';
 import {DelayedLink, LoginForm} from '../components';
-import { createHackerTokenAction, createHackerAction } from '../redux/actions';
-import { IsNotLoggedIn } from '../containers';
+import {createHackerTokenAction, createHackerAction} from '../redux/actions';
+import {IsNotLoggedIn} from '../containers';
+import packageJson from '../../package.json';
 
 const LOGIN_ITEMS = [
   {
@@ -59,7 +60,7 @@ class _Login extends React.Component {
   }
 
   handleLogin = async (event) => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     event.preventDefault();
     const formData = new FormData(event.target);
     const email_address = formData.get('email_address');
@@ -77,7 +78,7 @@ class _Login extends React.Component {
   }
 
   handleRegister = async (event) => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     event.preventDefault();
     const formData = new FormData(event.target);
     const email_address = formData.get('email_address');
@@ -110,7 +111,7 @@ class _Login extends React.Component {
       <IsNotLoggedIn>
         <main className="login">
           <section className="login__section login__section--login">
-              <img src={require('../assets/logo.png')} alt={"logo"} width={70} />
+            <img src={require('../assets/logo.png')} alt={"logo"} width={70}/>
             <div className="login__head">
               <h1 className="login__header">Hack The Valley</h1>
               <span className="login__subheader">Hacker Dashboard</span>
@@ -124,6 +125,7 @@ class _Login extends React.Component {
               errorCodes={loginErrorCodes}
             />
             <DelayedLink className={"button button--light"} to={"/forgotpassword"}>Forgot Password?</DelayedLink>
+            <div className="login__version">{packageJson.version} Build {process.env.REACT_APP_VERSION}</div>
           </section>
           <section className="login__section login__section--register">
             <h2 className="login__form-header">Register</h2>
