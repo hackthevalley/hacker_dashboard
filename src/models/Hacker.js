@@ -19,7 +19,8 @@ export class Hacker extends Model {
     "applications",
     "created_at",
     "updated_at",
-    "phone_number"
+    "phone_number",
+    "resume"
   ]) {
     super(data, keys);
     if(!this.avatar) {

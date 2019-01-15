@@ -1,4 +1,4 @@
-import htv from 'htv-sdk';
+import htv from '@hackthevalley/sdk';
 import HttpRequestError from '../../errors/HttpRequestError';
 import {logoutAction} from './';
 import {Hacker} from '../../models';
@@ -37,6 +37,7 @@ export function getMeAction() {
           promo_email,
           created_at,
           updated_at,
+          resume,
           applications {
             _id
             application {

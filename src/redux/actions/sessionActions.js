@@ -1,5 +1,5 @@
 import localforage from 'localforage';
-import htv from 'htv-sdk';
+import htv from '@hackthevalley/sdk';
 import HttpRequestError from '../../errors/HttpRequestError';
 import { FETCH_LOADING, FETCH_SUCCESS, FETCH_FAIL } from '.';
 

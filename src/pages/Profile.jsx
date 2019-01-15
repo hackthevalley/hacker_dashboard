@@ -7,7 +7,7 @@ import SchoolNameServiceProvider from "../providers/SchoolNameServiceProvider";
 import {Hacker} from "../models";
 import {ErrorCodes} from "../components/ErrorCodes";
 import {Announcement} from "../components/Announcements";
-import {DelayedLink} from "../components";
+import htv from '@hackthevalley/sdk';
 
 class _Profile extends Component {
 
@@ -16,7 +16,8 @@ class _Profile extends Component {
     this.schoolList = SchoolNameServiceProvider.getList();
     this.state = {
       // The actual hacker's profile
-      me: new Hacker({})
+      me: new Hacker({}),
+      newResumeBase64: ""
     };
   }
 
@@ -55,6 +56,7 @@ class _Profile extends Component {
       website: formData.get('website') || null,
       phone_number: formData.get('phone_number') || null,
       description: formData.get('description') || null,
+      resume: this.state.newResumeBase64 || null
     }));
     if (action.error) {
       this.setState({
@@ -265,11 +267,38 @@ class _Profile extends Component {
               value={this.state.me.description}
             />
           </div>
+
+          <div className="profile__form-item profile__col profile__col--full">
+            <label className="profile__label" htmlFor="description">
+              Resume<br/>
+              <small>
+                Resumes will be shared with our sponsors. If you are actively seeking internship or full-time job, we
+                recommend you upload a resume.<br/>
+                PDF format only.
+              </small>
+            </label>
+            <small>
+              {me.resume ? "Resume submitted.": "You don't have any resume on file."}
+            </small>
+            <br/>
+            <input type={"file"} onChange={async (e) => {
+              if(e.target.files.length > 0) {
+                let base64 = await htv.File.getBase64FromFile(e.target.files[0]);
+                let fileType = htv.File.getFileTypeFromBase64(base64);
+                if(fileType !== 'pdf') {
+                  window.alert("You must choose a .pdf file.");
+                } else {
+                  this.setState({newResumeBase64: base64});
+                }
+              }
+            }}/>
+          </div>
         </div>
         {(me.first_name && me.last_name && me.dob && me.school && me.phone_number) ?
           <Announcement>
             Your profile is complete! you can now start to apply for Hack The Valley 3.<br/>
-            <small>Visit [Applications] page to get started. Application will be closed on January 31st, act fast!</small>
+            <small>Visit [Applications] page to get started. Application will be closed on January 31st, act fast!
+            </small>
           </Announcement> : null}
         <div className="profile__form-item">
           <button type="submit" className="profile__button" disabled={this.props.fetchCount > 0}>

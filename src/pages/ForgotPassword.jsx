@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import '../scss/pages/login.scss';
 import {DelayedLink, LoginForm} from '../components';
 import {IsNotLoggedIn} from '../containers';
-import htv from "htv-sdk";
+import htv from "@hackthevalley/sdk";
 import extractError from "../helpers/extractError";
 
 const SEND_ITEMS = [
