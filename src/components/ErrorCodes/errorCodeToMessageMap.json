@@ -1,5 +1,4 @@
 {
-  "HttpInternal": "Something we don't know how to handle happened. It's probably not your fault.",
   "HackerNotFound": "Email is not registered.",
   "InvalidEmail": "Email address is not valid.",
   "InvalidPassword": "Password must be atleast 8 characters.",
