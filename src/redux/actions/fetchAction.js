@@ -32,7 +32,6 @@ export function fetchAction(...args) {
         result,
       });
     } catch (err) {
-      console.error(err);
       const error = new HttpRequestError(err.errorCodes || ['HttpInternal']);
       return dispatch({
         type: FETCH_FAIL,

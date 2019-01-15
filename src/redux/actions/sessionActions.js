@@ -62,8 +62,8 @@ export function createHackerAction(email_address, password) {
         dispatch({ type: FETCH_SUCCESS }),
       ]);
     } catch (err) {
-      const errorCodes = err.graphQLErrors
-        ? err.graphQLErrors.map(err => err.message)
+      const errorCodes = err.response
+        ? err.response.errors.map(err => err.message)
         : err.errorCodes;
       const error = new HttpRequestError(errorCodes);
       return Promise.all([
