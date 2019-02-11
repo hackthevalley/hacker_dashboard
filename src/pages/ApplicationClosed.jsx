@@ -17,6 +17,8 @@ const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  display: block;
+  height: auto !important;
 `;
 
 export class ApplicationClosed extends Component {

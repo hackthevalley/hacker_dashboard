@@ -8,7 +8,6 @@
 }
 
 #root {
-  @include flex;
   overflow-x: hidden;
   overflow-y: auto;
   background-color: $background;
