@@ -12,9 +12,9 @@ import {createBrowserHistory}                                   from 'history';
 import {Provider}                                               from 'react-redux';
 import thunk                                                    from 'redux-thunk';
 
-import {App}         from './containers';
 import * as Reducers from './redux/reducers';
 import './scss/index.scss';
+import {ApplicationClosed} from "./pages/ApplicationClosed";
 
 console.log(`Running version ${process.env.REACT_APP_VERSION} [${process.env.NODE_ENV}]`); // Just so we know the version
 
@@ -46,7 +46,7 @@ const store           = createStore(
 ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <App/>
+            <ApplicationClosed/>
         </ConnectedRouter>
     </Provider>,
     document.getElementById('root')
