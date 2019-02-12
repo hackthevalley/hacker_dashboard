@@ -29,11 +29,13 @@ export class ApplicationClosed extends Component {
         <br/>
         <p>Application for HTV III is closed. We are currently reviewing all applications, you will receive an email once a decision has been made.</p>
         <br/>
-        <h2>Round 1 Acceptances</h2>
+        <h2>Acceptances</h2>
         <br/>
-        <p>🙌 We just released round 1 acceptances! <b>Please check your spam folder, sometimes the acceptance email goes to spam.</b></p>
+        <p>🙌 We have sent out all acceptances! <b>Please check your spam folder, sometimes the acceptance email goes to spam.</b></p>
         <br/>
-        <p>If you did not receive an acceptance, please be patient, we will be releasing round 2 acceptances in a few days!</p>
+        <p>If you did not receive an acceptance, please be patient, there is still a chance to get in if someone declines their invitation.</p>
+        <br/>
+        <p>You can also login to <a href="https://acceptance.hackthevalley.io">acceptance.hackthevalley.io</a> to check you acceptance details!</p>
       </Container>
     )
   }
